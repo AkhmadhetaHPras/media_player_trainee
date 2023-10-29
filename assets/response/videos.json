@@ -1,5 +1,30 @@
 {
   "status": 200,
-  "data": [{}],
+  "data": [
+    {
+      "title": "Aquaman And The Lost Kingdom | Trailer",
+      "creator": "DC",
+      "description": "Director James Wan and Aquaman himself, Jason Momoa—along with Patrick Wilson, Amber Heard, Yahya Abdul-Mateen II and Nicole Kidman—return in the sequel to the highest-grossing DC film of all time: “Aquaman and the Lost Kingdom.”\nHaving failed to defeat Aquaman the first time, Black Manta, still driven by the need to avenge his father's death, will stop at nothing to take Aquaman down once and for all. This time Black Manta is more formidable than ever before, wielding the power of the mythic Black Trident, which unleashes an ancient and malevolent force. To defeat him, Aquaman will turn to his imprisoned brother Orm, the former King of Atlantis, to forge an unlikely alliance. Together, they must set aside their differences in order to protect their kingdom and save Aquaman's family, and the world, from irreversible destruction.",
+      "release_date": "2023-09-14",
+      "source_path": "assets/videos/aquaman_and_the_lost_kingdom_trailer.mp4",
+      "cover_path": "assets/imgs/cover_aquaman_and_the_lost_kingdom_trailer.jpeg"
+    },
+    {
+      "title": "Marvel Studios' Loki | Official Trailer | Disney+",
+      "creator": "Marvel",
+      "description": "After stealing the Tesseract during the events of “Avengers: Endgame,” an alternate version of Loki is brought to the mysterious Time Variance Authority, a bureaucratic organization that exists outside of time and space and monitors the timeline. They give Loki a choice: face being erased from existence due to being a “time variant” or help fix the timeline and stop a greater threat.",
+      "release_date": "2021-04-05",
+      "source_path": "assets/videos/marvel_studios'_loki_official_trailer_disney+.mp4",
+      "cover_path": "assets/imgs/cover_marvel_studios'_loki_official_trailer_disney+.jpeg"
+    },
+    {
+      "title": "Marvel Studios' Loki Season 2 | Official Trailer | Disney+",
+      "creator": "Marvel",
+      "description": "In the aftermath of Season 1, Loki finds himself in a battle for the soul of the Time Variance Authority. Along with Mobius, Hunter B-15 and a team of new and returning characters, Loki navigates an ever-expanding and increasingly dangerous multiverse in search of Sylvie, Judge Renslayer, Miss Minutes and the truth of what it means to possess free will and glorious purpose.",
+      "release_date": "2023-07-31",
+      "source_path": "assets/videos/marvel_studios'_loki_season_2_official_trailer_disney+.mp4",
+      "cover_path": "assets/imgs/cover_marvel_studios'_loki_season_2_official_trailer_disney+.jpeg"
+    }
+  ],
   "error": ""
 }

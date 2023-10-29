@@ -1,5 +1,38 @@
 {
   "status": 200,
-  "data": [{}],
+  "data": [
+    {
+      "title": "Night Changes",
+      "artist": "One Direction",
+      "album_name": "FOUR",
+      "release_year": "2014",
+      "source_path": "assets/musics/one_direction_night_changes.mp3",
+      "cover_path": "assets/imgs/cover_one_direction_night_changes.jpeg"
+    },
+    {
+      "title": "Story Of My Life",
+      "artist": "One Direction",
+      "album_name": "Midnight Memories",
+      "release_year": "2013",
+      "source_path": "assets/musics/one_direction_story_of_my_life.mp3",
+      "cover_path": "assets/imgs/cover_one_direction_story_of_my_life.jpeg"
+    },
+    {
+      "title": "Hari Bersamanya",
+      "artist": "Sheila On 7",
+      "album_name": "Berlayar",
+      "release_year": "2011",
+      "source_path": "assets/musics/sheila_on_7_hari_bersamanya.mp3",
+      "cover_path": "assets/imgs/cover_sheila_on_7_hari_bersamanya.jpeg"
+    },
+    {
+      "title": "Itu Aku",
+      "artist": "Sheila On 7",
+      "album_name": "Pejantan Tangguh",
+      "release_year": "2004",
+      "source_path": "assets/musics/sheila_on_7_itu_aku.mp3",
+      "cover_path": "assets/imgs/cover_sheila_on_7_itu_aku.jpeg"
+    }
+  ],
   "error": ""
 }

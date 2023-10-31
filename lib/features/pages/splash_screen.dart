@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:media_player_trainee/config/routes/main_routes.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
 import 'package:media_player_trainee/constants/assets_const.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,12 +15,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final Duration _animatedDuration = const Duration(milliseconds: 500);
+  final Duration _animatedDuration = const Duration(milliseconds: 300);
   final List<bool> _visibilityList = [false, false, false, false];
 
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting('id_ID');
     _startAnimation(0);
   }
 

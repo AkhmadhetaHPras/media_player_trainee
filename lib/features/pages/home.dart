@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:media_player_trainee/config/routes/main_routes.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
 import 'package:media_player_trainee/config/themes/main_text_style.dart';
 import 'package:media_player_trainee/features/shared_components/custom_app_bar.dart';
@@ -90,89 +92,113 @@ class HomeState extends State<Home> {
     );
   }
 
-  Column _coverVideoCard(
+  Widget _coverVideoCard(
     BuildContext context, {
     required Video video,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: MediaQuery.sizeOf(context).width * 9 / 16,
-          child: Image.asset(
-            video.coverPath!,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 24,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                video.title!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: MainTextStyle.poppinsW700.copyWith(
-                  fontSize: 15,
-                  color: MainColor.whiteF2F0EB,
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+        context,
+        MainRoute.videoPlayer,
+        arguments: video,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+              width: double.infinity,
+              height: MediaQuery.sizeOf(context).width * 9 / 16,
+              child: video.sourceType == "local"
+                  ? Image.asset(
+                      video.coverPath!,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: video.coverPath!,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          const Center(
+                        child: CircularProgressIndicator(
+                          color: MainColor.purple5A579C,
+                        ),
+                      ),
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    )),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 24,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  video.title!,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: MainTextStyle.poppinsW700.copyWith(
+                    fontSize: 15,
+                    color: MainColor.whiteF2F0EB,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    video.creator!,
-                    overflow: TextOverflow.ellipsis,
-                    style: MainTextStyle.poppinsW400.copyWith(
-                      fontSize: 12,
-                      color: MainColor.whiteF2F0EB,
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      video.creator!,
+                      overflow: TextOverflow.ellipsis,
+                      style: MainTextStyle.poppinsW400.copyWith(
+                        fontSize: 12,
+                        color: MainColor.whiteF2F0EB,
+                      ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6),
-                    child: Icon(
-                      Icons.circle,
-                      size: 6,
-                      color: MainColor.whiteF2F0EB,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Icon(
+                        Icons.circle,
+                        size: 6,
+                        color: MainColor.whiteF2F0EB,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "${video.viewsCount!.formatViewsCount()} x ditonton",
-                    overflow: TextOverflow.ellipsis,
-                    style: MainTextStyle.poppinsW400.copyWith(
-                      fontSize: 12,
-                      color: MainColor.whiteF2F0EB,
+                    Text(
+                      "${video.viewsCount!.formatViewsCount()} x views",
+                      overflow: TextOverflow.ellipsis,
+                      style: MainTextStyle.poppinsW400.copyWith(
+                        fontSize: 12,
+                        color: MainColor.whiteF2F0EB,
+                      ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6),
-                    child: Icon(
-                      Icons.circle,
-                      size: 6,
-                      color: MainColor.whiteF2F0EB,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Icon(
+                        Icons.circle,
+                        size: 6,
+                        color: MainColor.whiteF2F0EB,
+                      ),
                     ),
-                  ),
-                  Text(
-                    video.releaseDate!.toLocalTime(),
-                    overflow: TextOverflow.ellipsis,
-                    style: MainTextStyle.poppinsW400.copyWith(
-                      fontSize: 12,
-                      color: MainColor.whiteF2F0EB,
+                    Text(
+                      video.releaseDate!.toLocalTime(),
+                      overflow: TextOverflow.ellipsis,
+                      style: MainTextStyle.poppinsW400.copyWith(
+                        fontSize: 12,
+                        color: MainColor.whiteF2F0EB,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -195,7 +221,13 @@ class HomeState extends State<Home> {
     required Music music,
   }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          MainRoute.musicPlayer,
+          arguments: music,
+        );
+      },
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -203,19 +235,43 @@ class HomeState extends State<Home> {
             width: 190,
             height: 200,
             decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  music.coverPath!,
-                ),
-                fit: BoxFit.cover,
-              ),
+              image: music.sourceType == "local"
+                  ? DecorationImage(
+                      image: AssetImage(
+                        music.coverPath!,
+                      ),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(36),
               ),
             ),
+            child: music.sourceType != "local"
+                ? CachedNetworkImage(
+                    imageUrl: music.coverPath!,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        const Center(
+                      child: CircularProgressIndicator(
+                        color: MainColor.purple5A579C,
+                      ),
+                    ),
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: ShapeDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(36),
+                        ),
+                      ),
+                    ),
+                  )
+                : null,
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
+          Positioned(
+            bottom: -1,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(36),
@@ -228,7 +284,7 @@ class HomeState extends State<Home> {
                     alignment: Alignment.centerLeft,
                     width: 190,
                     height: 60,
-                    decoration: const ShapeDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment(0.00, -1.00),
                         end: Alignment(0, 1),
@@ -236,12 +292,6 @@ class HomeState extends State<Home> {
                           Color(0x7F120911),
                           Color(0xFF0D0D0D),
                         ],
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(36),
-                          bottomRight: Radius.circular(36),
-                        ),
                       ),
                     ),
                     child: Padding(

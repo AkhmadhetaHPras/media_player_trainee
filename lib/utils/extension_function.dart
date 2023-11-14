@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 extension DateTimeX on DateTime {
   String toFormatGeneralData() {
-    DateFormat dateFormat = DateFormat('dd MMMM yyyy', 'id_ID');
+    DateFormat dateFormat = DateFormat('dd MMMM yyyy');
 
     return dateFormat.format(this);
   }
@@ -28,16 +28,14 @@ extension StringTimeX on String {
     final now = DateTime.now();
     Duration diff = now.difference(tempDate);
 
-    if (diff.inDays > 4) {
+    if (diff.inDays > 7) {
       return tempDate.toFormatGeneralData();
-    } else if (diff.inDays >= 1 && diff.inDays <= 4) {
-      return '${diff.inDays}h';
-    } else if (diff.inHours != 0) {
-      return '${diff.inHours}j';
-    } else if (diff.inMinutes != 0) {
-      return '${diff.inMinutes}m';
+    } else if (diff.inDays == 7) {
+      return 'One week ago';
+    } else if (diff.inDays >= 1 && diff.inDays <= 6) {
+      return '${diff.inDays} days ago';
     } else {
-      return 'Baru saja';
+      return 'Today';
     }
   }
 }

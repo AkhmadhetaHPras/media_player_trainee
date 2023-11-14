@@ -30,6 +30,16 @@
       "source": "assets/videos/marvel_studios'_loki_season_2_official_trailer_disney+.mp4",
       "cover_path": "assets/imgs/cover_marvel_studios'_loki_season_2_official_trailer_disney+.jpeg",
       "views_count": 90128612
+    },
+    {
+      "title": "FutureBuilder (Widget of the Week)",
+      "creator": "Flutter",
+      "description": "Have a Future and need some widgets to display its values? Try FutureBuilder! Add a Future and a build method, and you'll create widgets based on the Future state and update them as it changes.",
+      "release_date": "2018-01-23",
+      "source_type": "network",
+      "source": "https://github.com/AkhmadhetaHPras/host-assets/raw/main/media-trainee/flutter_future_builder_widget_of_the_week.mp4",
+      "cover_path": "https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-trainee/cover_flutter_future_builder_widget_of_the_week.jpeg?raw=true",
+      "views_count": 80912801
     }
   ],
   "error": ""

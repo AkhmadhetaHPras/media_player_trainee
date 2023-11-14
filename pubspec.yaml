@@ -14,6 +14,9 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_svg: ^2.0.8
   intl: ^0.18.1
+  video_player: ^2.8.1
+  audioplayers: ^5.2.0
+  cached_network_image: ^3.3.0
 
 dev_dependencies:
   flutter_test:

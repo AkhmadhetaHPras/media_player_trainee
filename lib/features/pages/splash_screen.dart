@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    initializeDateFormatting('id_ID');
+    initializeDateFormatting();
     _startAnimation(0);
   }
 

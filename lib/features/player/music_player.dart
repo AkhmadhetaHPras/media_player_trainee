@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
 import 'package:media_player_trainee/config/themes/main_text_style.dart';
-import 'package:media_player_trainee/features/shared_components/custom_app_bar.dart';
+import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
 import 'package:media_player_trainee/utils/music_model.dart';
 
 class MusicPlayer extends StatefulWidget {
@@ -33,13 +33,23 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   late Music music;
+  late Source source;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     music = ModalRoute.of(context)!.settings.arguments as Music;
     setState(() {
-      _duration = Duration(seconds: music.duration!);
+      source = music.sourceType == "local"
+          ? AssetSource(
+              music.source!.replaceFirst("assets/", ""),
+            )
+          : UrlSource(music.source!);
+    });
+    newPlayer.setSource(source).then((value) {
+      setState(() async {
+        _duration = await newPlayer.getDuration() ?? const Duration();
+      });
     });
   }
 

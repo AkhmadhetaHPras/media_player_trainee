@@ -3,7 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:media_player_trainee/utils/extension_function.dart';
 
-void main() {
+void runExtensionTests() {
   group('DateTimeX.toFormatGeneralData', () {
     test('Return "12 July 2023" for DateTime object of 2023-07-12', () {
       /// setup

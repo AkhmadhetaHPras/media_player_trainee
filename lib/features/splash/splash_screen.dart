@@ -6,6 +6,7 @@ import 'package:media_player_trainee/config/routes/main_routes.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
 import 'package:media_player_trainee/constants/assets_const.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:media_player_trainee/features/splash/components/circle_component.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -55,17 +56,19 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Stack(
           children: [
             AnimatedOpacity(
-                opacity: _visibilityList[0] ? 1 : 0,
-                duration: _animatedDuration,
-                child: _circleComponent(context,
-                    scale: 3, color: MainColor.grey989794)),
+              opacity: _visibilityList[0] ? 1 : 0,
+              duration: _animatedDuration,
+              child: const CircleComponent(
+                scale: 3,
+                color: MainColor.grey989794,
+              ),
+            ),
             Align(
               alignment: Alignment.center,
               child: AnimatedOpacity(
                 opacity: _visibilityList[1] ? 1 : 0,
                 duration: _animatedDuration,
-                child: _circleComponent(
-                  context,
+                child: const CircleComponent(
                   scale: 1.7,
                   color: MainColor.greyB6B5B1,
                 ),
@@ -76,8 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: AnimatedOpacity(
                 opacity: _visibilityList[2] ? 1 : 0,
                 duration: _animatedDuration,
-                child: _circleComponent(
-                  context,
+                child: const CircleComponent(
                   scale: 1.3,
                   color: MainColor.greyD4D2CE,
                 ),
@@ -88,8 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: AnimatedOpacity(
                 opacity: _visibilityList[3] ? 1 : 0,
                 duration: _animatedDuration,
-                child: _circleComponent(
-                  context,
+                child: const CircleComponent(
                   scale: 0.8,
                   color: MainColor.black222222,
                 ),
@@ -100,8 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: AnimatedOpacity(
                 opacity: _visibilityList[3] ? 1 : 0,
                 duration: _animatedDuration,
-                child: _circleComponent(
-                  context,
+                child: CircleComponent(
                   scale: 0.8,
                   child: SvgPicture.asset(
                     AssetsConsts.logo,
@@ -115,26 +115,6 @@ class _SplashScreenState extends State<SplashScreen> {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  ClipRRect _circleComponent(
-    BuildContext context, {
-    required double scale,
-    Color? color,
-    Widget? child,
-  }) {
-    return ClipRRect(
-      child: Transform.scale(
-        scale: scale,
-        child: child ??
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color,
-              ),
-            ),
       ),
     );
   }

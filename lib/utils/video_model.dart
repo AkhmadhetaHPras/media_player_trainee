@@ -40,6 +40,7 @@ class VideoModel {
 class Video {
   String? title;
   String? creator;
+  String? creatorPhoto;
   String? description;
   String? releaseDate;
   String? sourceType;
@@ -50,6 +51,7 @@ class Video {
   Video({
     this.title,
     this.creator,
+    this.creatorPhoto,
     this.description,
     this.releaseDate,
     this.sourceType,
@@ -61,6 +63,7 @@ class Video {
   factory Video.fromJson(Map<String, dynamic> json) => Video(
         title: json["title"],
         creator: json["creator"],
+        creatorPhoto: json["creator_photo"],
         description: json["description"],
         releaseDate: json["release_date"],
         sourceType: json["source_type"],
@@ -72,6 +75,7 @@ class Video {
   Map<String, dynamic> toJson() => {
         "title": title,
         "creator": creator,
+        "creator_photo": creatorPhoto,
         "description": description,
         "release_date": releaseDate,
         "source_type": sourceType,

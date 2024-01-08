@@ -8,7 +8,6 @@
       "release_year": "2014",
       "source_type": "local",
       "source": "assets/musics/one_direction_night_changes.mp3",
-      "duration": 211,
       "cover_path": "assets/imgs/cover_one_direction_night_changes.jpeg"
     },
     {
@@ -18,7 +17,6 @@
       "release_year": "2013",
       "source_type": "local",
       "source": "assets/musics/one_direction_story_of_my_life.mp3",
-      "duration": 245,
       "cover_path": "assets/imgs/cover_one_direction_story_of_my_life.jpeg"
     },
     {
@@ -28,7 +26,6 @@
       "release_year": "2011",
       "source_type": "local",
       "source": "assets/musics/sheila_on_7_hari_bersamanya.mp3",
-      "duration": 231,
       "cover_path": "assets/imgs/cover_sheila_on_7_hari_bersamanya.jpeg"
     },
     {
@@ -38,7 +35,6 @@
       "release_year": "2004",
       "source_type": "local",
       "source": "assets/musics/sheila_on_7_itu_aku.mp3",
-      "duration": 279,
       "cover_path": "assets/imgs/cover_sheila_on_7_itu_aku.jpeg"
     },
     {
@@ -48,7 +44,6 @@
       "release_year": "2004",
       "source_type": "network",
       "source": "https://github.com/AkhmadhetaHPras/host-assets/raw/main/media-trainee/bernafas_tanpamu.mp3",
-      "duration": 235,
       "cover_path": "https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-trainee/cover_last_child_bernafas_tanpamu.jpeg?raw=true"
     }
   ],

@@ -13,6 +13,8 @@ abstract class MainColor {
   /// [black]
   static const Color black000000 = Color(0xFF000000);
   static const Color black222222 = Color(0xFF222222);
+  static const Color black120911 = Color(0x7F120911);
+  static const Color black0D0D0D = Color(0xFF0D0D0D);
 
   /// [red]
   static const Color redDC3545 = Color(0xFFDC3545);

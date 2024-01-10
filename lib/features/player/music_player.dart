@@ -124,6 +124,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
           const SizedBox(
             height: 18,
           ),
+
+          /// music cover image
           Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 15,
@@ -167,6 +169,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   : null,
             ),
           ),
+
+          /// music information
           Text(
             music.title!,
             style: MainTextStyle.poppinsW600.copyWith(
@@ -181,9 +185,36 @@ class _MusicPlayerState extends State<MusicPlayer> {
               color: MainColor.whiteF2F0EB,
             ),
           ),
-          const SizedBox(
-            height: 12,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                music.albumName!,
+                style: MainTextStyle.poppinsW400.copyWith(
+                  fontSize: 13,
+                  color: MainColor.whiteFFFFFF,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                child: Icon(
+                  Icons.circle,
+                  size: 6,
+                  color: MainColor.whiteF2F0EB,
+                ),
+              ),
+              Text(
+                music.releaseYear!,
+                style: MainTextStyle.poppinsW400.copyWith(
+                  fontSize: 13,
+                  color: MainColor.whiteFFFFFF,
+                ),
+              ),
+            ],
           ),
+          const SizedBox(height: 4),
+
+          /// music indicator
           Slider(
               value: _position.inSeconds.toDouble(),
               min: 0.0,
@@ -218,18 +249,20 @@ class _MusicPlayerState extends State<MusicPlayer> {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                splashRadius: 25,
-                icon: Icon(
-                  play ? Icons.pause : Icons.play_arrow,
-                  color: Colors.white,
-                ),
-                onPressed: playPause,
+
+          /// controll button
+          Material(
+            color: MainColor.whiteF2F0EB,
+            shape: const OvalBorder(),
+            child: IconButton(
+              splashRadius: 25,
+              iconSize: 32,
+              icon: Icon(
+                play ? Icons.pause : Icons.play_arrow,
+                color: MainColor.purple5A579C,
               ),
-            ],
+              onPressed: playPause,
+            ),
           ),
         ],
       ),

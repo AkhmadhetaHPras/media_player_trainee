@@ -54,6 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         child: Stack(
+          alignment: Alignment.center,
           children: [
             AnimatedOpacity(
               opacity: _visibilityList[0] ? 1 : 0,
@@ -63,52 +64,40 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: MainColor.grey989794,
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: AnimatedOpacity(
-                opacity: _visibilityList[1] ? 1 : 0,
-                duration: _animatedDuration,
-                child: const CircleComponent(
-                  scale: 1.7,
-                  color: MainColor.greyB6B5B1,
-                ),
+            AnimatedOpacity(
+              opacity: _visibilityList[1] ? 1 : 0,
+              duration: _animatedDuration,
+              child: const CircleComponent(
+                scale: 1.7,
+                color: MainColor.greyB6B5B1,
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: AnimatedOpacity(
-                opacity: _visibilityList[2] ? 1 : 0,
-                duration: _animatedDuration,
-                child: const CircleComponent(
-                  scale: 1.3,
-                  color: MainColor.greyD4D2CE,
-                ),
+            AnimatedOpacity(
+              opacity: _visibilityList[2] ? 1 : 0,
+              duration: _animatedDuration,
+              child: const CircleComponent(
+                scale: 1.3,
+                color: MainColor.greyD4D2CE,
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: AnimatedOpacity(
-                opacity: _visibilityList[3] ? 1 : 0,
-                duration: _animatedDuration,
-                child: const CircleComponent(
-                  scale: 0.8,
-                  color: MainColor.black222222,
-                ),
+            AnimatedOpacity(
+              opacity: _visibilityList[3] ? 1 : 0,
+              duration: _animatedDuration,
+              child: const CircleComponent(
+                scale: 0.8,
+                color: MainColor.black222222,
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: AnimatedOpacity(
-                opacity: _visibilityList[3] ? 1 : 0,
-                duration: _animatedDuration,
-                child: CircleComponent(
-                  scale: 0.8,
-                  child: SvgPicture.asset(
-                    AssetsConsts.logo,
-                    colorFilter: const ColorFilter.mode(
-                      MainColor.purple5A579C,
-                      BlendMode.srcIn,
-                    ),
+            AnimatedOpacity(
+              opacity: _visibilityList[3] ? 1 : 0,
+              duration: _animatedDuration,
+              child: CircleComponent(
+                scale: 0.8,
+                child: SvgPicture.asset(
+                  AssetsConsts.logo,
+                  colorFilter: const ColorFilter.mode(
+                    MainColor.purple5A579C,
+                    BlendMode.srcIn,
                   ),
                 ),
               ),

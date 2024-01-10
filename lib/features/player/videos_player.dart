@@ -92,11 +92,12 @@ class _VideosPlayerState extends State<VideosPlayer> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// video player
+          /// video section
           FutureBuilder(
             future: _initializeVideoPlayerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
+                /// video player
                 return Column(
                   children: [
                     GestureDetector(
@@ -123,6 +124,8 @@ class _VideosPlayerState extends State<VideosPlayer> {
                                 AnimatedOpacity(
                                   duration: animDuration,
                                   opacity: _isVisible ? 1 : 0,
+
+                                  /// video progress indicator
                                   child: Container(
                                     padding: const EdgeInsets.only(top: 20),
                                     decoration: BoxDecoration(
@@ -184,6 +187,8 @@ class _VideosPlayerState extends State<VideosPlayer> {
                           AnimatedOpacity(
                             duration: animDuration,
                             opacity: _isVisible ? 1 : 0,
+
+                            /// video button control
                             child: Material(
                               color: MainColor.black000000.withOpacity(0.2),
                               shape: const OvalBorder(),
@@ -216,6 +221,7 @@ class _VideosPlayerState extends State<VideosPlayer> {
                   ],
                 );
               } else {
+                /// placeholder on video load
                 return Stack(
                   alignment: Alignment.center,
                   children: [
@@ -260,6 +266,8 @@ class _VideosPlayerState extends State<VideosPlayer> {
             },
           ),
           const SizedBox(height: 4),
+
+          /// video information
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(

@@ -45,6 +45,7 @@ class HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// music list section
               const TitleSection(title: "Music Collections"),
               SizedBox(
                 height: 200,
@@ -69,6 +70,8 @@ class HomeState extends State<Home> {
               const SizedBox(
                 height: 10,
               ),
+
+              /// video list section
               const TitleSection(title: "Videos"),
               ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),

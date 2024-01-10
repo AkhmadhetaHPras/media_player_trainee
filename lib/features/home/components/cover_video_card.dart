@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:media_player_trainee/config/routes/main_routes.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
 import 'package:media_player_trainee/config/themes/main_text_style.dart';
+import 'package:media_player_trainee/shared_components/dot_divider.dart';
 import 'package:media_player_trainee/utils/extension_function.dart';
 import 'package:media_player_trainee/utils/video_model.dart';
 
@@ -80,14 +81,7 @@ class CoverVideoCard extends StatelessWidget {
                         color: MainColor.whiteF2F0EB,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      child: Icon(
-                        Icons.circle,
-                        size: 6,
-                        color: MainColor.whiteF2F0EB,
-                      ),
-                    ),
+                    const DotDivider(),
                     Text(
                       "${video.viewsCount!.formatViewsCount()} x views",
                       overflow: TextOverflow.ellipsis,
@@ -96,14 +90,7 @@ class CoverVideoCard extends StatelessWidget {
                         color: MainColor.whiteF2F0EB,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      child: Icon(
-                        Icons.circle,
-                        size: 6,
-                        color: MainColor.whiteF2F0EB,
-                      ),
-                    ),
+                    const DotDivider(),
                     Text(
                       video.releaseDate!.toLocalTime(),
                       overflow: TextOverflow.ellipsis,

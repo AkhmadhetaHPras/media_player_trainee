@@ -1,8 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
 import 'package:media_player_trainee/config/themes/main_text_style.dart';
+import 'package:media_player_trainee/features/player/components/music_cover_image.dart';
+import 'package:media_player_trainee/features/player/components/time_display.dart';
 import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
 import 'package:media_player_trainee/utils/music_model.dart';
 
@@ -124,49 +125,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
           const SizedBox(
             height: 18,
           ),
-
-          /// music cover image
           Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 15,
               horizontal: 18,
             ),
-            child: Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: music.sourceType == "local"
-                      ? DecorationImage(
-                          image: AssetImage(
-                            music.coverPath!,
-                          ),
-                          fit: BoxFit.cover,
-                        )
-                      : null),
-              child: music.sourceType != "local"
-                  ? CachedNetworkImage(
-                      imageUrl: music.coverPath!,
-                      progressIndicatorBuilder: (context, url, progress) =>
-                          Center(
-                        child: CircularProgressIndicator(
-                          color: MainColor.purple5A579C,
-                          value: progress.progress,
-                        ),
-                      ),
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: double.infinity,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    )
-                  : null,
+
+            /// music cover image
+            child: MusicCoverImage(
+              sourceType: music.sourceType!,
+              cover: music.coverPath!,
             ),
           ),
 
@@ -216,37 +184,25 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
           /// music indicator
           Slider(
-              value: _position.inSeconds.toDouble(),
-              min: 0.0,
-              max: _duration.inSeconds.toDouble(),
-              thumbColor: MainColor.purple5A579C,
-              activeColor: MainColor.purple5A579C,
-              onChanged: (double value) {
-                setState(() {
-                  seekToSecond(value.toInt());
-                  value = value;
-                });
-              }),
+            value: _position.inSeconds.toDouble(),
+            min: 0.0,
+            max: _duration.inSeconds.toDouble(),
+            thumbColor: MainColor.purple5A579C,
+            activeColor: MainColor.purple5A579C,
+            onChanged: (double value) {
+              setState(() {
+                seekToSecond(value.toInt());
+                value = value;
+              });
+            },
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 18,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _position.toString().split(".")[0],
-                  style: const TextStyle(
-                    color: MainColor.whiteF2F0EB,
-                  ),
-                ),
-                Text(
-                  _duration.toString().split(".")[0],
-                  style: const TextStyle(
-                    color: MainColor.whiteF2F0EB,
-                  ),
-                )
-              ],
+            child: TimeDisplay(
+              position: _position,
+              duration: _duration,
             ),
           ),
 

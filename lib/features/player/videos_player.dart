@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/config/themes/main_text_style.dart';
+import 'package:media_player_trainee/features/player/components/loading_video_placeholder.dart';
+import 'package:media_player_trainee/features/player/components/time_display.dart';
+import 'package:media_player_trainee/features/player/components/video_information.dart';
 import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
 import 'package:media_player_trainee/utils/debouncer.dart';
-import 'package:media_player_trainee/utils/extension_function.dart';
 import 'package:media_player_trainee/utils/video_model.dart';
 import 'package:video_player/video_player.dart';
 
@@ -23,7 +23,6 @@ class _VideosPlayerState extends State<VideosPlayer> {
   Duration _position = const Duration();
   late Future<void> _initializeVideoPlayerFuture;
   bool _isVisible = true;
-  bool _isShowMore = true;
 
   @override
   void didChangeDependencies() {
@@ -31,8 +30,8 @@ class _VideosPlayerState extends State<VideosPlayer> {
     video = ModalRoute.of(context)!.settings.arguments as Video;
     video.sourceType == "local"
         ? _controller = VideoPlayerController.asset(video.source!)
-        : _controller = VideoPlayerController.networkUrl(Uri.parse(
-            "https://github.com/AkhmadhetaHPras/host-assets/raw/main/media-trainee/flutter_future_builder_widget_of_the_week.mp4"));
+        : _controller =
+            VideoPlayerController.networkUrl(Uri.parse(video.source!));
     _initializeVideoPlayerFuture = _controller.initialize().then((value) {
       setState(() {
         _duration = _controller.value.duration;
@@ -63,12 +62,6 @@ class _VideosPlayerState extends State<VideosPlayer> {
   onVisible() {
     setState(() {
       _isVisible = true;
-    });
-  }
-
-  switchShowMore() {
-    setState(() {
-      _isShowMore = !_isShowMore;
     });
   }
 
@@ -149,27 +142,9 @@ class _VideosPlayerState extends State<VideosPlayer> {
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 8,
                                           ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                _position
-                                                    .toString()
-                                                    .split(".")[0],
-                                                style: const TextStyle(
-                                                  color: MainColor.whiteF2F0EB,
-                                                ),
-                                              ),
-                                              Text(
-                                                _duration
-                                                    .toString()
-                                                    .split(".")[0],
-                                                style: const TextStyle(
-                                                  color: MainColor.whiteF2F0EB,
-                                                ),
-                                              )
-                                            ],
+                                          child: TimeDisplay(
+                                            position: _position,
+                                            duration: _duration,
                                           ),
                                         ),
                                         const SizedBox(height: 2),
@@ -222,194 +197,28 @@ class _VideosPlayerState extends State<VideosPlayer> {
                 );
               } else {
                 /// placeholder on video load
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: MediaQuery.sizeOf(context).width * (9 / 16),
-                      decoration: BoxDecoration(
-                        image: video.sourceType == "local"
-                            ? DecorationImage(
-                                image: AssetImage(
-                                  video.coverPath!,
-                                ),
-                                fit: BoxFit.cover,
-                              )
-                            : null,
-                      ),
-                      child: video.sourceType != "local"
-                          ? CachedNetworkImage(
-                              imageUrl: video.coverPath!,
-                              progressIndicatorBuilder:
-                                  (context, url, progress) => const Center(
-                                child: CircularProgressIndicator(
-                                  color: MainColor.purple5A579C,
-                                ),
-                              ),
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : null,
-                    ),
-                    const CircularProgressIndicator(),
-                  ],
+                return LoadingVideoPlaceholder(
+                  sourceType: video.sourceType!,
+                  cover: video.coverPath!,
                 );
               }
             },
           ),
           const SizedBox(height: 4),
 
-          /// video information
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
                 vertical: 12,
                 horizontal: 8,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    video.title!,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: MainTextStyle.poppinsW600.copyWith(
-                      fontSize: 18,
-                      color: MainColor.whiteF2F0EB,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: video.creatorPhoto ?? '',
-                          progressIndicatorBuilder: (context, url, progress) =>
-                              const Center(
-                            child: CircularProgressIndicator(
-                              color: MainColor.purple5A579C,
-                            ),
-                          ),
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          video.creator!,
-                          maxLines: 1,
-                          style: MainTextStyle.poppinsW500.copyWith(
-                            fontSize: 14,
-                            color: MainColor.whiteFFFFFF,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${video.viewsCount!.formatViewsCount()} x views",
-                        style: MainTextStyle.poppinsW500.copyWith(
-                          fontSize: 13,
-                          color: MainColor.whiteFFFFFF,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
-                        child: Icon(
-                          Icons.circle,
-                          size: 6,
-                          color: MainColor.whiteF2F0EB,
-                        ),
-                      ),
-                      Text(
-                        video.releaseDate!.toLocalTime(),
-                        style: MainTextStyle.poppinsW500.copyWith(
-                          fontSize: 13,
-                          color: MainColor.whiteFFFFFF,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  if (_hasThreeLine(video.description) && _isShowMore) ...[
-                    Text(
-                      video.description!,
-                      maxLines: 3,
-                      style: MainTextStyle.poppinsW400.copyWith(
-                        fontSize: 12,
-                        color: MainColor.whiteFFFFFF,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: switchShowMore,
-                      child: Text(
-                        '...other',
-                        style: MainTextStyle.poppinsW400.copyWith(
-                          fontSize: 12,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ] else ...[
-                    Text(
-                      video.description!,
-                      style: MainTextStyle.poppinsW400.copyWith(
-                        fontSize: 12,
-                        color: MainColor.whiteFFFFFF,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    InkWell(
-                      onTap: switchShowMore,
-                      child: Text(
-                        'Less',
-                        style: MainTextStyle.poppinsW400.copyWith(
-                          fontSize: 12,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ]
-                ],
-              ),
+
+              /// video information
+              child: VideoInformation(video: video),
             ),
           ),
         ],
       ),
     );
-  }
-
-  bool _hasThreeLine(String? deskripsi) {
-    final span = TextSpan(
-      text: deskripsi,
-      style: MainTextStyle.poppinsW400.copyWith(
-        fontSize: 12,
-      ),
-    );
-    final tp = TextPainter(
-      text: span,
-      maxLines: 3,
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: MediaQuery.of(context).size.width - 16);
-    return tp.didExceedMaxLines;
   }
 }

@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+/// Kelas untuk menangani kasus debouncing dalam pengembangan aplikasi Flutter.
+/// Debouncing digunakan untuk menunda atau menunda eksekusi suatu tindakan hingga waktu tertentu setelah tindakan tersebut terakhir kali dipicu.
+/// Dalam konteks ini, Debouncer dapat digunakan untuk menunda eksekusi suatu tindakan (callback) hingga waktu tertentu setelah tindakan tersebut terakhir kali dipicu.
 class Debouncer {
   final int milliseconds;
   VoidCallback? action;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
+import 'package:media_player_trainee/data/video_model.dart';
 import 'package:media_player_trainee/features/player/components/loading_video_placeholder.dart';
 import 'package:media_player_trainee/features/player/components/time_display.dart';
 import 'package:media_player_trainee/features/player/components/video_information.dart';
 import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
 import 'package:media_player_trainee/utils/debouncer.dart';
-import 'package:media_player_trainee/utils/video_model.dart';
 import 'package:video_player/video_player.dart';
 
 class VideosPlayer extends StatefulWidget {

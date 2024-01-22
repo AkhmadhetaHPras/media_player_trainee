@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final musicModel = musicModelFromJson(jsonString);
-
 import 'dart:convert';
 
 MusicModel musicModelFromJson(String str) =>
@@ -44,7 +40,6 @@ class Music {
   String? releaseYear;
   String? sourceType;
   String? source;
-  // int? duration;
   String? coverPath;
 
   Music({
@@ -54,7 +49,6 @@ class Music {
     this.releaseYear,
     this.sourceType,
     this.source,
-    // this.duration,
     this.coverPath,
   });
 
@@ -65,7 +59,6 @@ class Music {
         releaseYear: json["release_year"],
         sourceType: json["source_type"],
         source: json["source"],
-        // duration: json["duration"],
         coverPath: json["cover_path"],
       );
 
@@ -76,7 +69,6 @@ class Music {
         "release_year": releaseYear,
         "source_type": sourceType,
         "source": source,
-        // "duration": duration,
         "cover_path": coverPath,
       };
 }

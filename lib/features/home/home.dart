@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:media_player_trainee/config/themes/main_color.dart';
+import 'package:media_player_trainee/data/music_model.dart';
+import 'package:media_player_trainee/data/repository.dart';
+import 'package:media_player_trainee/data/video_model.dart';
 import 'package:media_player_trainee/features/home/components/cover_music_card.dart';
 import 'package:media_player_trainee/features/home/components/cover_video_card.dart';
 import 'package:media_player_trainee/features/home/components/title_section.dart';
 import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
-import 'package:media_player_trainee/utils/music_model.dart';
-import 'package:media_player_trainee/utils/repository.dart';
-import 'package:media_player_trainee/utils/video_model.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

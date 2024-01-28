@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.parpol">
+    package="com.mpt">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="media_player_trainee"

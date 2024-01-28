@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _startAnimation(int index) {
     if (index < _visibilityList.length) {
-      doAfter(_animatedDuration, () {
+      Timer(_animatedDuration, () {
         setState(() {
           _visibilityList[index] = true;
         });
@@ -45,10 +45,6 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void doAfter(Duration duration, Function() action) {
-    Timer(duration, action);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
               opacity: _visibilityList[0] ? 1 : 0,
               duration: _animatedDuration,
               child: const CircleComponent(
+                key: Key('circle_1'),
                 scale: 3,
                 color: MainColor.grey989794,
               ),
@@ -68,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
               opacity: _visibilityList[1] ? 1 : 0,
               duration: _animatedDuration,
               child: const CircleComponent(
+                key: Key('circle_2'),
                 scale: 1.7,
                 color: MainColor.greyB6B5B1,
               ),
@@ -76,6 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
               opacity: _visibilityList[2] ? 1 : 0,
               duration: _animatedDuration,
               child: const CircleComponent(
+                key: Key('circle_3'),
                 scale: 1.3,
                 color: MainColor.greyD4D2CE,
               ),
@@ -84,6 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
               opacity: _visibilityList[3] ? 1 : 0,
               duration: _animatedDuration,
               child: const CircleComponent(
+                key: Key('circle_4'),
                 scale: 0.8,
                 color: MainColor.black222222,
               ),
@@ -92,6 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
               opacity: _visibilityList[3] ? 1 : 0,
               duration: _animatedDuration,
               child: CircleComponent(
+                key: const Key('circle_5'),
                 scale: 0.8,
                 child: SvgPicture.asset(
                   AssetsConsts.logo,

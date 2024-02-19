@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:media_player_trainee/utils/extension_function.dart';
+import 'package:media_player/utils/extension_function.dart';
 
-void runExtensionTests() {
+void main() {
   group('DateTimeX.toFormatGeneralData', () {
     test('Return "12 July 2023" for DateTime object of 2023-07-12', () {
       /// setup

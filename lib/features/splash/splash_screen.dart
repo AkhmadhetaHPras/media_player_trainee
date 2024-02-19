@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:media_player_trainee/config/routes/main_routes.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/constants/assets_const.dart';
+import 'package:media_player/config/routes/main_routes.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/constants/assets_const.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:media_player_trainee/features/splash/components/circle_component.dart';
+import 'package:media_player/features/splash/components/circle_component.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

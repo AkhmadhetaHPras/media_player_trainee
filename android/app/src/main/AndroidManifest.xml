@@ -3,7 +3,7 @@
     package="com.mpt">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="media_player_trainee"
+        android:label="media_player"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

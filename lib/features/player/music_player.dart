@@ -1,11 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/config/themes/main_text_style.dart';
-import 'package:media_player_trainee/data/music_model.dart';
-import 'package:media_player_trainee/features/player/components/music_cover_image.dart';
-import 'package:media_player_trainee/features/player/components/time_display.dart';
-import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_text_style.dart';
+import 'package:media_player/data/music_model.dart';
+import 'package:media_player/features/player/components/music_cover_image.dart';
+import 'package:media_player/features/player/components/time_display.dart';
+import 'package:media_player/shared_components/custom_app_bar.dart';
 
 class MusicPlayer extends StatefulWidget {
   const MusicPlayer({super.key});
@@ -64,6 +64,11 @@ class _MusicPlayerState extends State<MusicPlayer> {
       setState(() {
         _position = pos;
       });
+      if (pos.inSeconds.toDouble() == _duration.inSeconds.toDouble()) {
+        setState(() {
+          play = false;
+        });
+      }
     });
   }
 

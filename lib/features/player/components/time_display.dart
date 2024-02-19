@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_color.dart';
 
 class TimeDisplay extends StatelessWidget {
   const TimeDisplay({

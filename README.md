@@ -1,4 +1,4 @@
-# media_player_trainee
+# media_player
 
 A new Flutter project.
 

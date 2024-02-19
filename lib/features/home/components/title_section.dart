@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/config/themes/main_text_style.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_text_style.dart';
 
 class TitleSection extends StatelessWidget {
   const TitleSection({super.key, required this.title});

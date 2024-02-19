@@ -1,4 +1,4 @@
-name: media_player_trainee
+name: media_player
 description: A new Flutter project.
 publish_to: "none"
 
@@ -22,6 +22,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  mockito: ^5.4.4
 flutter:
   uses-material-design: true
   assets:

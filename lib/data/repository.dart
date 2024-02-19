@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
-import 'package:media_player_trainee/constants/assets_const.dart';
-import 'package:media_player_trainee/data/music_model.dart';
-import 'package:media_player_trainee/data/video_model.dart';
+import 'package:media_player/constants/assets_const.dart';
+import 'package:media_player/data/music_model.dart';
+import 'package:media_player/data/video_model.dart';
 
 abstract class Repository {
   static List<Music> musics = [];

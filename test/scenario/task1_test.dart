@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/constants/assets_const.dart';
-import 'package:media_player_trainee/features/splash/components/circle_component.dart';
-import 'package:media_player_trainee/features/splash/splash_screen.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/constants/assets_const.dart';
+import 'package:media_player/features/splash/components/circle_component.dart';
+import 'package:media_player/features/splash/splash_screen.dart';
 
-void task1Test() {
+void main() {
   testWidgets('Structure of the Circle Component widget is built correctly',
       (WidgetTester tester) async {
     // Create the widget with default values

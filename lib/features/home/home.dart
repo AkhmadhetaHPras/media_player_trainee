@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/data/music_model.dart';
-import 'package:media_player_trainee/data/repository.dart';
-import 'package:media_player_trainee/data/video_model.dart';
-import 'package:media_player_trainee/features/home/components/cover_music_card.dart';
-import 'package:media_player_trainee/features/home/components/cover_video_card.dart';
-import 'package:media_player_trainee/features/home/components/title_section.dart';
-import 'package:media_player_trainee/shared_components/custom_app_bar.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/data/music_model.dart';
+import 'package:media_player/data/repository.dart';
+import 'package:media_player/data/video_model.dart';
+import 'package:media_player/features/home/components/cover_music_card.dart';
+import 'package:media_player/features/home/components/cover_video_card.dart';
+import 'package:media_player/features/home/components/title_section.dart';
+import 'package:media_player/shared_components/custom_app_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -50,6 +50,7 @@ class HomeState extends State<Home> {
               SizedBox(
                 height: 200,
                 child: ListView.separated(
+                  key: const Key('music_list_view'),
                   scrollDirection: Axis.horizontal,
                   itemCount: musics.length,
                   itemBuilder: (_, i) {
@@ -74,6 +75,7 @@ class HomeState extends State<Home> {
               /// video list section
               const TitleSection(title: "Videos"),
               ListView.separated(
+                key: const Key('video_list_view'),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: videos.length,

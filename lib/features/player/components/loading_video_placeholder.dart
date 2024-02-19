@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_color.dart';
 
 class LoadingVideoPlaceholder extends StatelessWidget {
   const LoadingVideoPlaceholder({

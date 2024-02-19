@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_color.dart';
 
 /// Objek [ThemeData] yang mendefinisikan tema visual untuk aplikasi.
 /// Tema ini mencakup berbagai properti seperti warna utama, skema warna, ikon, dan pengaturan lainnya yang memengaruhi tampilan dan perilaku visual dari widget-widget dalam aplikasi.

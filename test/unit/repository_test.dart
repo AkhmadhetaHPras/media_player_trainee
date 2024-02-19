@@ -1,8 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_player_trainee/data/repository.dart';
+import 'package:media_player/data/repository.dart';
 
-// abstract class RepositoryTest {
-void runRepoTests() {
+void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Repository', () {

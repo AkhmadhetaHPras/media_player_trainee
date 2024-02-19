@@ -43,8 +43,8 @@
       "album_name": "Stay",
       "release_year": "2021",
       "source_type": "network",
-      "source": "https://github.com/AkhmadhetaHPras/host-assets/raw/main/media-trainee/justin_bieber_stay.mp3",
-      "cover_path": "https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-trainee/cover_justin_bieber_stay.jpeg?raw=true"
+      "source": "https://github.com/AkhmadhetaHPras/host-assets/raw/main/media-player/justin_bieber_stay.mp3",
+      "cover_path": "https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-player/cover_justin_bieber_stay.jpeg?raw=true"
     }
   ],
   "error": ""

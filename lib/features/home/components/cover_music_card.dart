@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:media_player_trainee/config/routes/main_routes.dart';
-import 'package:media_player_trainee/config/themes/main_color.dart';
-import 'package:media_player_trainee/config/themes/main_text_style.dart';
-import 'package:media_player_trainee/data/music_model.dart';
+import 'package:media_player/config/routes/main_routes.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_text_style.dart';
+import 'package:media_player/data/music_model.dart';
 
 class CoverMusicCard extends StatelessWidget {
   const CoverMusicCard({
@@ -80,6 +80,10 @@ class CoverMusicCard extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     width: 190,
                     height: 60,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 8,
+                    ),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment(0.00, -1.00),
@@ -90,38 +94,32 @@ class CoverMusicCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24.0,
-                        vertical: 8,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            music.title!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: MainTextStyle.poppinsW600.copyWith(
-                              fontSize: 14,
-                              color: MainColor.whiteF2F0EB,
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          music.title!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: MainTextStyle.poppinsW600.copyWith(
+                            fontSize: 14,
+                            color: MainColor.whiteF2F0EB,
                           ),
-                          const SizedBox(
-                            height: 3,
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          music.artist!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: MainTextStyle.poppinsW400.copyWith(
+                            fontSize: 12,
+                            letterSpacing: 0.4,
+                            color: MainColor.whiteF2F0EB,
                           ),
-                          Text(
-                            music.artist!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: MainTextStyle.poppinsW400.copyWith(
-                              fontSize: 12,
-                              letterSpacing: 0.4,
-                              color: MainColor.whiteF2F0EB,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

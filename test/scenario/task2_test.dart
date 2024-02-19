@@ -7,6 +7,8 @@ import 'package:media_player/data/music_model.dart';
 import 'package:media_player/data/video_model.dart';
 import 'package:media_player/features/home/components/cover_music_card.dart';
 import 'package:media_player/features/home/components/cover_video_card.dart';
+import 'package:media_player/features/home/components/title_section.dart';
+import 'package:media_player/features/home/home.dart';
 import 'package:media_player/shared_components/dot_divider.dart';
 import 'package:media_player/utils/extension_function.dart';
 
@@ -293,10 +295,99 @@ void main() {
     } else if (image is ExactAssetImage) {
       expect(image.assetName, video.coverPath!);
     } else {
-      fail('Unexpected image type found | use Image.asset instead');
+      fail('Unexpected asset image widget found | use Image.asset instead');
     }
   });
 
-  testWidgets(
-      'Cover video card render network source', (WidgetTester tester) async {});
+  testWidgets('Cover video card render network source',
+      (WidgetTester tester) async {
+    final video = Video(
+      title: "FutureBuilder (Widget of the Week)",
+      creator: "Flutter",
+      releaseDate: "2018-01-23",
+      sourceType: "network",
+      source:
+          "https://github.com/AkhmadhetaHPras/host-assets/raw/main/media-player/flutter_future_builder_widget_of_the_week.mp4",
+      coverPath:
+          "https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-player/cover_flutter_future_builder_widget_of_the_week.jpeg?raw=true",
+      viewsCount: 80912801,
+    );
+
+    // Build the widget
+    await tester.pumpWidget(MediaQuery(
+      data: const MediaQueryData(size: Size(480, 800)),
+      child: MaterialApp(
+        home: Scaffold(
+          body: CoverVideoCard(video: video),
+        ),
+      ),
+    ));
+
+    final imageWrapper = find.descendant(
+      of: find.byKey(const Key('column_card_wrapper')),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is SizedBox &&
+            widget.width == double.infinity &&
+            widget.height == 270 &&
+            widget.child is CachedNetworkImage,
+      ),
+    );
+    expect(imageWrapper, findsOneWidget);
+
+    final networkImage =
+        tester.widget<CachedNetworkImage>(find.byType(CachedNetworkImage));
+    expect(networkImage.imageUrl, video.coverPath);
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(networkImage.imageBuilder, isNotNull,
+        reason:
+            'CachedNetworkImage widget should have imageBuilder as specified');
+  });
+
+  /// HOME TEST
+  testWidgets('Home display music and video list', (WidgetTester tester) async {
+    // Build the widget
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(
+        body: Home(),
+      ),
+    ));
+
+    final musicTitle = find.byWidgetPredicate((widget) =>
+        widget is TitleSection && widget.title == 'Music Collections');
+    expect(musicTitle, findsOneWidget);
+    expect(find.text('Music Collections'), findsOneWidget);
+
+    final listWrapper = find.byWidgetPredicate(
+      (widget) =>
+          widget is SizedBox &&
+          widget.height! >= 200 &&
+          widget.child is ListView &&
+          widget.child?.key == const Key('music_list_view'),
+    );
+    expect(listWrapper, findsOneWidget,
+        reason:
+            'Music list view must be wrapped in a Sizedbox that has a certain height');
+
+    final musicListFinder = find.byKey(const Key('music_list_view'));
+    expect(musicListFinder, findsOneWidget);
+    final musicList = tester.widget<ListView>(musicListFinder);
+    expect(musicList.scrollDirection, Axis.horizontal);
+
+    final videoTitle = find.byWidgetPredicate(
+        (widget) => widget is TitleSection && widget.title == 'Videos');
+    expect(videoTitle, findsOneWidget);
+    expect(find.text('Videos'), findsOneWidget);
+
+    final videoListFinder = find.byKey(const Key('video_list_view'));
+    expect(videoListFinder, findsOneWidget);
+    final videoList = tester.widget<ListView>(videoListFinder);
+    expect(videoList.physics, const NeverScrollableScrollPhysics());
+    expect(videoList.shrinkWrap, true);
+
+    await tester.pump();
+    expect(find.byType(CoverMusicCard), findsWidgets);
+    expect(find.byType(CoverVideoCard), findsWidgets);
+  });
 }

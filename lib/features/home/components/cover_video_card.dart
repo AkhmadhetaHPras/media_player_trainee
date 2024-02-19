@@ -28,29 +28,30 @@ class CoverVideoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).width * 9 / 16,
-              child: video.sourceType == "local"
-                  ? Image.asset(
-                      video.coverPath!,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: video.coverPath!,
-                      progressIndicatorBuilder: (context, url, progress) =>
-                          const Center(
-                        child: CircularProgressIndicator(
-                          color: MainColor.purple5A579C,
+            width: double.infinity,
+            height: MediaQuery.sizeOf(context).width * 9 / 16,
+            child: video.sourceType == "local"
+                ? Image.asset(
+                    video.coverPath!,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: video.coverPath!,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        const Center(
+                      child: CircularProgressIndicator(
+                        color: MainColor.purple5A579C,
+                      ),
+                    ),
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    )),
+                    ),
+                  ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 8,

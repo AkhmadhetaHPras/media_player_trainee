@@ -6,6 +6,7 @@ import 'package:media_player/data/music_model.dart';
 import 'package:media_player/features/player/components/music_cover_image.dart';
 import 'package:media_player/features/player/components/time_display.dart';
 import 'package:media_player/shared_components/custom_app_bar.dart';
+import 'package:media_player/shared_components/dot_divider.dart';
 
 class MusicPlayer extends StatefulWidget {
   const MusicPlayer({super.key});
@@ -168,14 +169,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   color: MainColor.whiteFFFFFF,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                child: Icon(
-                  Icons.circle,
-                  size: 6,
-                  color: MainColor.whiteF2F0EB,
-                ),
-              ),
+              const DotDivider(),
               Text(
                 music.releaseYear!,
                 style: MainTextStyle.poppinsW400.copyWith(

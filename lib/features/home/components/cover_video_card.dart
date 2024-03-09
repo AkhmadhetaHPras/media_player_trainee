@@ -33,6 +33,7 @@ class CoverVideoCard extends StatelessWidget {
             child: video.sourceType == "local"
                 ? Image.asset(
                     video.coverPath!,
+                    fit: BoxFit.cover,
                   )
                 : CachedNetworkImage(
                     imageUrl: video.coverPath!,
@@ -72,8 +73,9 @@ class CoverVideoCard extends StatelessWidget {
                 const SizedBox(
                   height: 4,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 12,
                   children: [
                     Text(
                       video.creator!,

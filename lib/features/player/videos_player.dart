@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:media_player/config/themes/main_color.dart';
 import 'package:media_player/data/video_model.dart';
 import 'package:media_player/features/player/components/loading_video_placeholder.dart';
-import 'package:media_player/features/player/components/time_display.dart';
 import 'package:media_player/features/player/components/video_information.dart';
+import 'package:media_player/features/player/components/video_indicator.dart';
 import 'package:media_player/shared_components/custom_app_bar.dart';
 import 'package:media_player/utils/debouncer.dart';
 import 'package:video_player/video_player.dart';
@@ -119,41 +119,10 @@ class _VideosPlayerState extends State<VideosPlayer> {
                                   opacity: _isVisible ? 1 : 0,
 
                                   /// video progress indicator
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 20),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          MainColor.black000000,
-                                          MainColor.black000000
-                                              .withOpacity(0.5),
-                                          MainColor.black000000
-                                              .withOpacity(0.2),
-                                          Colors.transparent,
-                                        ],
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                          ),
-                                          child: TimeDisplay(
-                                            position: _position,
-                                            duration: _duration,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        VideoProgressIndicator(
-                                          _controller,
-                                          allowScrubbing: false,
-                                        ),
-                                      ],
-                                    ),
+                                  child: VideoIndicator(
+                                    position: _position,
+                                    duration: _duration,
+                                    controller: _controller,
                                   ),
                                 ),
                               ],

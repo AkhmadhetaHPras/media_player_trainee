@@ -17,28 +17,16 @@ class LoadingVideoPlaceholder extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           height: MediaQuery.sizeOf(context).width * (9 / 16),
-          decoration: BoxDecoration(
-            image: sourceType == "local"
-                ? DecorationImage(
-                    image: AssetImage(
-                      cover,
-                    ),
-                    fit: BoxFit.cover,
-                  )
-                : null,
-          ),
-          child: sourceType != "local"
-              ? CachedNetworkImage(
+          child: sourceType == "local"
+              ? Image.asset(
+                  cover,
+                  fit: BoxFit.cover,
+                )
+              : CachedNetworkImage(
                   imageUrl: cover,
-                  progressIndicatorBuilder: (context, url, progress) =>
-                      const Center(
-                    child: CircularProgressIndicator(
-                      color: MainColor.purple5A579C,
-                    ),
-                  ),
                   imageBuilder: (context, imageProvider) => Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -47,10 +35,11 @@ class LoadingVideoPlaceholder extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
-              : null,
+                ),
         ),
-        const CircularProgressIndicator(),
+        const CircularProgressIndicator(
+          color: MainColor.purple5A579C,
+        ),
       ],
     );
   }

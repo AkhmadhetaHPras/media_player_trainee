@@ -34,9 +34,12 @@ void main() {
     expect(coverMusicCard, findsOneWidget);
 
     // Verify the structure of the widget
+    final gestureDetectorFinder = find.byType(GestureDetector);
+    expect(gestureDetectorFinder, findsOneWidget);
     final gestureDetector =
-        tester.widget<GestureDetector>(find.byType(GestureDetector));
+        tester.widget<GestureDetector>(gestureDetectorFinder);
     expect(gestureDetector.child, isA<Stack>());
+
     final stack = gestureDetector.child as Stack;
     expect(stack.alignment, Alignment.bottomCenter);
     expect(stack.children.length, 2);

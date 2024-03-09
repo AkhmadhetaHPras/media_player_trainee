@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-/// Kelas abstrak yang menyediakan konstanta untuk berbagai warna yang mungkin digunakan dalam tata letak dan tampilan aplikasi.
-/// Setiap konstanta warna memiliki nilai hexadecimal yang sesuai dengan warna yang diinginkan.
+/// An abstract class that provides constants for various colors that may be used in the layout and appearance of the application.
+/// Each color constant has a hexadecimal value corresponding to the desired color.
 abstract class MainColor {
   /// [white]
   static const Color whiteFFFFFF = Color(0xFFFFFFFF);

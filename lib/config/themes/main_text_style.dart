@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Kelas abstrak yang menyediakan gaya teks (text styles) menggunakan jenis font tertentu dengan berbagai ketebalan (font weight) yang mungkin digunakan dalam tata letak dan tampilan aplikasi.
-/// Setiap anggota kelas adalah objek TextStyle yang dapat langsung digunakan dalam pembuatan teks pada widget Flutter.
+/// An abstract class that provides text styles using specific font types with various font weights that may be used in the layout and appearance of the application.
+/// Each member of the class is a TextStyle object that can be directly used in text creation on Flutter widgets.
 abstract class MainTextStyle {
   static final poppinsW300 = GoogleFonts.poppins(fontWeight: FontWeight.w300);
   static final poppinsW400 = GoogleFonts.poppins(fontWeight: FontWeight.w400);

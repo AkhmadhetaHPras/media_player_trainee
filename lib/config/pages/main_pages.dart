@@ -5,8 +5,8 @@ import 'package:media_player/features/player/music_player.dart';
 import 'package:media_player/features/player/videos_player.dart';
 import 'package:media_player/features/splash/splash_screen.dart';
 
-/// Sebuah Map yang mengaitkan setiap rute yang didefinisikan dalam kelas [MainRoute] dengan fungsi pembuat widget (widget builder).
-/// Setiap rute dihubungkan dengan widget yang sesuai untuk tampilan yang terkait dengan rute tersebut.
+/// A Map that associates each route defined in the [MainRoute] class with a widget builder function.
+/// Each route is associated with a corresponding widget for the view associated with that route.
 Map<String, Widget Function(BuildContext)> mainPages = {
   MainRoute.splash: (context) => const SplashScreen(),
   MainRoute.home: (context) => const Home(),

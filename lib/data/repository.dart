@@ -10,8 +10,8 @@ abstract class Repository {
   static List<Music> musics = [];
   static List<Video> videos = [];
 
-  /// Memuat file JSON musik dari sumber data (musics.json).
-  /// Data yang diperoleh kemudian dimasukkan ke dalam list [musics].
+  /// Load the music JSON file from the data source (musics.json).
+  /// The data obtained is then inserted into the [musics] list.
   static Future<void> getMusics() async {
     try {
       String jsonString = await rootBundle.loadString(AssetsConsts.musicJson);
@@ -31,8 +31,8 @@ abstract class Repository {
     }
   }
 
-  /// Memuat file JSON musik dari sumber data (videos.json).
-  /// Data yang diperoleh kemudian dimasukkan ke dalam list [videos].
+  /// Load the music JSON file from the data source (videos.json).
+  /// The data obtained is then inserted into the [videos] list.
   static Future<void> getVideos() async {
     try {
       String jsonString = await rootBundle.loadString(AssetsConsts.videoJson);

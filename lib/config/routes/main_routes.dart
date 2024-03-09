@@ -1,7 +1,7 @@
-/// Kelas abstrak yang menyediakan konstanta string untuk berbagai rute (routes) dalam aplikasi.
-/// Rute-rute ini dapat digunakan sebagai identifikasi unik untuk navigasi antar layar atau tampilan dalam aplikasi.
+/// An abstract class that provides string constants for various routes in the application.
+/// These routes can be used as unique identifiers for navigation between screens or views in the application.
 ///
-/// Contoh Penggunaan
+/// Usage Example
 /// ```dart
 /// Navigator.pushNamed(context, MainRoute.splash);
 /// ```

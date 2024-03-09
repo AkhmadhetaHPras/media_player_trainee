@@ -1,5 +1,5 @@
-/// Kelas abstrak yang menyediakan konstanta string untuk berbagai aset dalam aplikasi, seperti gambar [SVG], [PNG], [JSON], dan lainnya.
-/// Setiap konstanta string merujuk pada lokasi relatif dari aset tersebut di dalam struktur direktori aplikasi.
+/// An abstract class that provides string constants for various assets in the application, such as [SVG], [PNG], [JSON] images, and others.
+/// Each string constant refers to the relative location of the asset within the application's directory structure.
 abstract class AssetsConsts {
   /// [svg]
   static const String logo = "assets/svgs/logo.svg";

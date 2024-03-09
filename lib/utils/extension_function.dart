@@ -1,13 +1,13 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeX on DateTime {
-  /// Konversi tanggal [DateTime] ke format string yang mencakup tanggal, bulan, dan tahun dalam format [dd MMMM yyyy].
+  /// Convert a [DateTime] date to a string format that includes the date, month, and year in [dd MMMM yyyy] format.
   ///
-  /// Contoh:
+  /// Example:
   /// ```dart
   /// DateFormat("yyyy-MM-dd").parse("2023-07-12").toFormatGeneralData();
   /// ```
-  /// Output: 12 Juli 2023
+  /// Output: 12 July 2023
   String toFormatGeneralData() {
     DateFormat dateFormat = DateFormat('dd MMMM yyyy');
 
@@ -16,10 +16,10 @@ extension DateTimeX on DateTime {
 }
 
 extension IntX on int {
-  /// Konversi angka [int] ke format string yang disesuaikan untuk nilai yang besar, dengan menggunakan
-  /// notasi 'k' untuk ribuan dan 'm' untuk juta.
+  /// Convert [int] numbers to a string format customized for large values, using
+  /// Notation 'k' for thousands and 'm' for millions.
   ///
-  /// Contoh:
+  /// Example:
   /// ```dart
   /// 1200..formatViewsCount();
   /// ```
@@ -38,10 +38,10 @@ extension IntX on int {
 }
 
 extension StringTimeX on String {
-  /// Memperluas fungsionalitas objek [String] yang menyimpan tanggal dalam format ["yyyy-MM-dd"].
-  /// Fungsi ini mengonversi tanggal tersebut menjadi format string yang mencakup informasi waktu relatif terhadap waktu lokal saat ini, seperti "Today", "One week ago", atau "5 days ago".
+  /// Extends the functionality of the [String] object that stores dates in ["yyyy-MM-dd"] format.
+  /// This function converts the date to a string format that includes time information relative to the current local time, such as "Today", "One week ago", or "n days ago" (with n 1 through 6).
   ///
-  /// Contoh:
+  /// Example:
   /// ```dart
   ///  DateFormat("yyyy-MM-dd").format(DateTime.now()).toLocalTime();
   /// ```

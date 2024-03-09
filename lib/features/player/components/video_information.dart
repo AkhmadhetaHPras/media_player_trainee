@@ -83,7 +83,6 @@ class _VideoInformationState extends State<VideoInformation> {
               const SizedBox(width: 8),
               Text(
                 widget.video.creator!,
-                maxLines: 1,
                 style: MainTextStyle.poppinsW500.copyWith(
                   fontSize: 14,
                   color: MainColor.whiteFFFFFF,
@@ -93,7 +92,6 @@ class _VideoInformationState extends State<VideoInformation> {
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               "${widget.video.viewsCount!.formatViewsCount()} x views",

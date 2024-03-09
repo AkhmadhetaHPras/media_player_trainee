@@ -1,16 +1,37 @@
-# media_player
+# Media Player
 
-A new Flutter project.
+**Flutter simple media player application**
 
-## Getting Started
+This application was created for a thesis
 
-This project is a starting point for a Flutter application.
+#### Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Basic Multimedia UI Components**
+  - Text and Image widgets
+  - Simple animations
+- **Third-party Multimedia Packages**
+  - google_fonts
+  - flutter_svg
+  - audioplayers
+  - video_player
+  - cached_network_image
+- **Multimedia Interactions**
+  - Play, pause, stop music and video
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+#### Automated Testing
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This application is equipped with automated testing using flutter_test.
+
+#### Author
+
+- Akhmadheta Hafid Prasetyawan
+
+#### References
+
+- Flutter: [https://flutter.dev/](https://flutter.dev/)
+- google_fonts: [https://pub.dev/packages/google_fonts](https://pub.dev/packages/google_fonts)
+- flutter_svg: [https://pub.dev/packages/flutter_svg](https://pub.dev/packages/flutter_svg)
+- audioplayers: [https://pub.dev/packages/audioplayers](https://pub.dev/packages/audioplayers)
+- video_player: [https://pub.dev/packages/video_player](https://pub.dev/packages/video_player)
+- cached_network_image: [https://pub.dev/packages/cached_network_image](https://pub.dev/packages/cached_network_image)
+- flutter_test: [https://pub.dev/packages/flutter_test](https://pub.dev/packages/flutter_test)

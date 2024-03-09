@@ -1,11 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_player/config/themes/main_color.dart';
+import 'package:media_player/config/themes/main_text_style.dart';
 import 'package:media_player/data/video_model.dart';
 import 'package:media_player/features/player/components/loading_video_placeholder.dart';
+import 'package:media_player/features/player/components/time_display.dart';
+import 'package:media_player/features/player/components/video_indicator.dart';
+import 'package:media_player/features/player/components/video_information.dart';
+import 'package:media_player/shared_components/dot_divider.dart';
+import 'package:media_player/utils/extension_function.dart';
+import 'package:video_player/video_player.dart';
 
 void main() {
-  final localSourceVideo = Video(
+  Video localSourceVideo = Video(
     title: "Aquaman And The Lost Kingdom | Trailer",
     creator: "DC",
     creatorPhoto:
@@ -18,6 +26,71 @@ void main() {
     coverPath: "assets/imgs/cover_aquaman_and_the_lost_kingdom_trailer.jpeg",
     viewsCount: 1082000,
   );
+
+  void checkWhenCanShowMore(
+    WidgetTester tester,
+    Finder inkWellFinder,
+    Finder columnFinder,
+    bool afterLess,
+  ) {
+    final reasonClue = afterLess
+        ? 'Hitting Less Button does not restore the widget or state:'
+        : '';
+    expect(
+      inkWellFinder,
+      findsOneWidget,
+      reason:
+          '$reasonClue InkWell widget not found within Column in VideoInformation Widget',
+    );
+    final inkWell = tester.widget<InkWell>(inkWellFinder);
+    expect(
+      (inkWell.child as Text).data,
+      '...other',
+      reason:
+          "$reasonClue InkWell child not a Text widget with '...other' text data",
+    );
+
+    final descriptionFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Text && widget.data == localSourceVideo.description,
+      ),
+    );
+    expect(
+      descriptionFinder,
+      findsOneWidget,
+      reason:
+          "$reasonClue Text widget that containing video description not found within Column in VideoInformation Widget",
+    );
+    final description = tester.widget<Text>(descriptionFinder);
+    expect(
+      description.maxLines,
+      3,
+      reason:
+          "$reasonClue maxLines property of Text widget that containing video description is not 3",
+    );
+  }
+
+  void checkWhenCanLess(
+    WidgetTester tester,
+    Finder inkWellFinder,
+    Finder columnFinder,
+  ) {
+    final inkWell = tester.widget<InkWell>(inkWellFinder);
+    expect((inkWell.child as Text).data, 'Less');
+
+    final descriptionFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Text && widget.data == localSourceVideo.description,
+      ),
+    );
+    expect(descriptionFinder, findsOneWidget);
+    final description = tester.widget<Text>(descriptionFinder);
+    expect(description.maxLines, null);
+  }
 
   testWidgets('Structur of LoadingVideoPlaceholder widget is built correctly',
       (WidgetTester tester) async {
@@ -148,11 +221,282 @@ void main() {
   });
 
   testWidgets('Structur of VideoIndicator widget is built correctly',
-      (WidgetTester tester) async {});
+      (WidgetTester tester) async {
+    Duration position = const Duration();
+    Duration duration = const Duration(seconds: 197);
+    VideoPlayerController controller = VideoPlayerController.asset(
+      'assets/videos/aquaman_and_the_lost_kingdom_trailer.mp4',
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: VideoIndicator(
+            position: position,
+            duration: duration,
+            controller: controller,
+          ),
+        ),
+      ),
+    );
+
+    final containerFinder = find.byType(Container).first;
+    expect(containerFinder, findsOneWidget);
+    final container = tester.widget<Container>(containerFinder);
+
+    expect((container.padding as EdgeInsets).top, 20.0);
+    expect(container.decoration, isA<BoxDecoration>());
+    expect((container.decoration as BoxDecoration).gradient,
+        isA<LinearGradient>());
+    expect(container.child, isA<Column>());
+
+    final linearGradient =
+        (container.decoration as BoxDecoration).gradient as LinearGradient;
+    expect(linearGradient.begin, Alignment.bottomCenter);
+    expect(linearGradient.end, Alignment.topCenter);
+
+    final colors = [
+      MainColor.black000000,
+      MainColor.black000000.withOpacity(0.5),
+      MainColor.black000000.withOpacity(0.2),
+      Colors.transparent,
+    ];
+    expect(linearGradient.colors, colors);
+
+    final columnFinder = find.byType(Column);
+    expect(columnFinder, findsOneWidget);
+    final column = container.child as Column;
+    expect(column.mainAxisSize, MainAxisSize.min);
+
+    final timeDisplayFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byWidgetPredicate((widget) =>
+          widget is Padding &&
+          (widget.padding as EdgeInsets).horizontal == 16 &&
+          widget.child is TimeDisplay),
+    );
+    expect(timeDisplayFinder, findsOneWidget);
+    expect(find.byType(TimeDisplay), findsOneWidget,
+        reason: 'VideosPlayer must have a TimeDisplay component');
+    expect(
+      find.text(position.toString().split(".")[0]),
+      findsOneWidget,
+      reason: 'VideosPlayer display video position',
+    );
+    expect(find.text(duration.toString().split(".")[0]), findsOneWidget,
+        reason: 'VideosPlayer display video duration');
+
+    final videoProgressFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byType(VideoProgressIndicator),
+    );
+    expect(videoProgressFinder, findsOneWidget);
+  });
 
   testWidgets('Structur of VideoInformation widget is built correctly',
-      (WidgetTester tester) async {});
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MediaQuery(
+        data: const MediaQueryData(size: Size(480, 800)),
+        child: MaterialApp(
+          home: Scaffold(
+            body: VideoInformation(
+              video: localSourceVideo,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final columnFinder = find.byType(Column);
+    expect(columnFinder, findsOneWidget);
+    final column = tester.widget<Column>(columnFinder);
+    expect(column.crossAxisAlignment, CrossAxisAlignment.start);
+
+    final titleFinder = find.byWidgetPredicate(
+        (widget) => widget is Text && widget.data == localSourceVideo.title);
+    expect(titleFinder, findsOneWidget);
+    final title = tester.widget<Text>(titleFinder);
+    expect(title.maxLines, 3);
+    expect(title.overflow, TextOverflow.ellipsis);
+    expect(
+      title.style,
+      MainTextStyle.poppinsW600.copyWith(
+        fontSize: 18,
+        color: MainColor.whiteF2F0EB,
+      ),
+    );
+
+    final paddingChannelWrapperFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Padding &&
+            (widget.padding as EdgeInsets).vertical == 16 &&
+            widget.child is Row,
+      ),
+    );
+    expect(paddingChannelWrapperFinder, findsOneWidget);
+    final rowChannelWrapperFinder = find.descendant(
+      of: paddingChannelWrapperFinder,
+      matching: find.byType(Row),
+    );
+    expect(rowChannelWrapperFinder, findsOneWidget);
+
+    final channelImageFinder = find.descendant(
+      of: rowChannelWrapperFinder,
+      matching: find.byType(CachedNetworkImage),
+    );
+    expect(channelImageFinder, findsOneWidget);
+    final channelImage = tester.widget<CachedNetworkImage>(channelImageFinder);
+    expect(channelImage.imageUrl, localSourceVideo.creatorPhoto);
+    expect(channelImage.imageBuilder, isNotNull);
+
+    final channelImageLoader = find.byType(CircularProgressIndicator);
+    expect(channelImageLoader, findsOneWidget);
+    expect(
+      tester.widget<CircularProgressIndicator>(channelImageLoader).color,
+      MainColor.purple5A579C,
+    );
+
+    final channelNameFinder = find.descendant(
+      of: rowChannelWrapperFinder,
+      matching: find.byType(Text),
+    );
+    expect(channelNameFinder, findsOneWidget);
+    final channelName = tester.widget<Text>(channelNameFinder);
+    expect(channelName.data, localSourceVideo.creator);
+    expect(
+      channelName.style,
+      MainTextStyle.poppinsW500.copyWith(
+        fontSize: 14,
+        color: MainColor.whiteFFFFFF,
+      ),
+    );
+
+    final rowDetailsWrapperFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Row &&
+            widget.children.first is Text &&
+            widget.children[1] is DotDivider &&
+            widget.children.last is Text,
+      ),
+    );
+    expect(rowDetailsWrapperFinder, findsOneWidget);
+
+    final viewsFinder = find.descendant(
+      of: rowDetailsWrapperFinder,
+      matching: find.byWidgetPredicate((widget) =>
+          widget is Text &&
+          widget.data ==
+              "${localSourceVideo.viewsCount!.formatViewsCount()} x views"),
+    );
+    expect(viewsFinder, findsOneWidget);
+    final viewsCount = tester.widget<Text>(viewsFinder);
+    expect(
+      viewsCount.style,
+      MainTextStyle.poppinsW500.copyWith(
+        fontSize: 13,
+        color: MainColor.whiteFFFFFF,
+      ),
+    );
+
+    final releaseFinder = find.descendant(
+      of: rowDetailsWrapperFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Text &&
+            widget.data == localSourceVideo.releaseDate!.toLocalTime(),
+      ),
+    );
+    expect(releaseFinder, findsOneWidget);
+    final releaseDate = tester.widget<Text>(releaseFinder);
+    expect(
+      releaseDate.style,
+      MainTextStyle.poppinsW500.copyWith(
+        fontSize: 13,
+        color: MainColor.whiteFFFFFF,
+      ),
+    );
+
+    final descriptionFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Text && widget.data == localSourceVideo.description,
+      ),
+    );
+    expect(descriptionFinder, findsOneWidget);
+    final description = tester.widget<Text>(descriptionFinder);
+    expect(
+      description.style,
+      MainTextStyle.poppinsW400.copyWith(
+        fontSize: 12,
+        color: MainColor.whiteFFFFFF,
+      ),
+    );
+
+    final inkWellFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byType(InkWell),
+    );
+    expect(inkWellFinder, findsOneWidget);
+    final inkWell = tester.widget<InkWell>(inkWellFinder);
+    expect(inkWell.child, isA<Text>());
+    expect(
+      (inkWell.child as Text).style,
+      MainTextStyle.poppinsW400.copyWith(
+        fontSize: 12,
+        color: Colors.blue,
+      ),
+    );
+
+    expect(description.maxLines, 3);
+    expect((inkWell.child as Text).data, '...other');
+  });
 
   testWidgets('VideoInformation widget can handle show more action',
-      (WidgetTester tester) async {});
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MediaQuery(
+        data: const MediaQueryData(size: Size(480, 800)),
+        child: MaterialApp(
+          home: Scaffold(
+            body: VideoInformation(
+              video: localSourceVideo,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final columnFinder = find.byType(Column);
+    expect(columnFinder, findsOneWidget);
+    Finder inkWellFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byType(InkWell),
+    );
+    checkWhenCanShowMore(tester, inkWellFinder, columnFinder, false);
+
+    await tester.tap(inkWellFinder);
+    await tester.pump();
+
+    inkWellFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byType(InkWell),
+    );
+
+    checkWhenCanLess(tester, inkWellFinder, columnFinder);
+
+    await tester.tap(inkWellFinder);
+    await tester.pump();
+
+    inkWellFinder = find.descendant(
+      of: columnFinder,
+      matching: find.byType(InkWell),
+    );
+    checkWhenCanShowMore(tester, inkWellFinder, columnFinder, true);
+  });
 }

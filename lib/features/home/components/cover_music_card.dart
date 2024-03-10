@@ -44,24 +44,17 @@ class CoverMusicCard extends StatelessWidget {
               ),
             ),
             child: music.sourceType != "local"
-                ? CachedNetworkImage(
-                    imageUrl: music.coverPath!,
-                    progressIndicatorBuilder: (context, url, progress) =>
-                        const Center(
-                      child: CircularProgressIndicator(
-                        color: MainColor.purple5A579C,
-                      ),
-                    ),
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: ShapeDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(36),
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(36),
+                    child: CachedNetworkImage(
+                      imageUrl: music.coverPath!,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          const Center(
+                        child: CircularProgressIndicator(
+                          color: MainColor.purple5A579C,
                         ),
                       ),
+                      fit: BoxFit.cover,
                     ),
                   )
                 : null,

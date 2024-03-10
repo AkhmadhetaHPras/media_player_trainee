@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:media_player/data/music_model.dart';
@@ -46,6 +47,92 @@ void main() {
     expect(find.text(duration.toString().split(".")[0]), findsOneWidget,
         reason: 'Music player display music duration');
   }
+
+  testWidgets('MusicCoverImage widget render local source',
+      (WidgetTester tester) async {
+    final music = Music(
+      title: 'Night Changes',
+      artist: 'One Direction',
+      coverPath: 'assets/imgs/cover_one_direction_night_changes.jpeg',
+      sourceType: 'local',
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MusicCoverImage(
+          sourceType: music.sourceType!,
+          cover: music.coverPath!,
+        ),
+      ),
+    );
+
+    expect(find.byType(MusicCoverImage), findsOneWidget);
+    final firstontainerFinder = find.byType(Container).first;
+    expect(firstontainerFinder, findsOneWidget);
+    final firstContainer = tester.widget<Container>(firstontainerFinder);
+    expect(firstContainer.decoration, isA<BoxDecoration>());
+    expect(firstContainer.child, isNull);
+    expect(
+      (firstContainer.decoration as BoxDecoration).borderRadius,
+      BorderRadius.circular(20),
+    );
+    expect(
+      (firstContainer.decoration as BoxDecoration).image,
+      isA<DecorationImage>(),
+    );
+    final decorationImage =
+        (firstContainer.decoration as BoxDecoration).image as DecorationImage;
+    expect(decorationImage.image, AssetImage(music.coverPath!));
+    expect(decorationImage.fit, BoxFit.cover);
+  });
+
+  testWidgets('MusicCoverImage widget render network source',
+      (WidgetTester tester) async {
+    final music = Music(
+      title: 'STAY',
+      artist: 'The Kid LAROI, Justin Bieber',
+      coverPath:
+          'https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-player/cover_justin_bieber_stay.jpeg?raw=true',
+      sourceType: 'network',
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MusicCoverImage(
+          sourceType: music.sourceType!,
+          cover: music.coverPath!,
+        ),
+      ),
+    );
+
+    expect(find.byType(MusicCoverImage), findsOneWidget);
+    final firstontainerFinder = find.byType(Container).first;
+    expect(firstontainerFinder, findsOneWidget);
+    final firstContainer = tester.widget<Container>(firstontainerFinder);
+    expect(firstContainer.decoration, isA<BoxDecoration>());
+    expect(
+      (firstContainer.decoration as BoxDecoration).borderRadius,
+      BorderRadius.circular(20),
+    );
+    expect(
+      (firstContainer.decoration as BoxDecoration).image,
+      isNull,
+    );
+    expect(firstContainer.child, isA<ClipRRect>());
+    final clipRRect = firstContainer.child as ClipRRect;
+    expect(
+      clipRRect.borderRadius,
+      BorderRadius.circular(20),
+    );
+    expect(
+      clipRRect.child,
+      isA<CachedNetworkImage>(),
+    );
+    final networkImage = clipRRect.child as CachedNetworkImage;
+
+    expect(networkImage.imageUrl, music.coverPath);
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(networkImage.fit, BoxFit.cover);
+  });
 
   testWidgets('Music player display music cover image and its informations',
       (WidgetTester tester) async {

@@ -108,8 +108,9 @@ class _VideosPlayerState extends State<VideosPlayer> {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
+                          SizedBox(
+                            width: double.infinity,
+                            height: MediaQuery.sizeOf(context).width * 9 / 16,
                             child: Stack(
                               alignment: Alignment.bottomLeft,
                               children: [

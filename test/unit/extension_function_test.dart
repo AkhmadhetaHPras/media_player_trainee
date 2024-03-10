@@ -36,6 +36,15 @@ void main() {
       expect(daysDiff, 'Today');
     });
 
+    test('Returns "3 days ago" for a date 3 days ago', () {
+      final sevenDaysAgo = DateFormat("yyyy-MM-dd")
+          .format(DateTime.now().subtract(const Duration(days: 3)));
+
+      final daysDiff = sevenDaysAgo.toLocalTime();
+
+      expect(daysDiff, '3 days ago');
+    });
+
     test('Returns "One week ago" for a date 7 days ago', () {
       final sevenDaysAgo = DateFormat("yyyy-MM-dd")
           .format(DateTime.now().subtract(const Duration(days: 7)));

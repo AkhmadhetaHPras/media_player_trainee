@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_player/config/themes/main_color.dart';
 import 'package:media_player/data/music_model.dart';
 import 'package:media_player/data/video_model.dart';
 import 'package:media_player/features/home/components/cover_music_card.dart';
@@ -13,7 +14,7 @@ import 'package:media_player/shared_components/dot_divider.dart';
 import 'package:media_player/utils/extension_function.dart';
 
 void main() {
-  testWidgets('Structur of cover music card widget is built correctly',
+  testWidgets('Structur of CoverMusicCard widget is built correctly',
       (WidgetTester tester) async {
     // Create a mock Music object for testing
     final music = Music(
@@ -64,12 +65,29 @@ void main() {
     // Check for the positioned
     final positioned = find.descendant(
       of: find.byType(Stack),
-      matching: find.byWidgetPredicate((widget) =>
-          widget is Positioned &&
-          widget.bottom == -1 &&
-          widget.child is ClipRRect),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Positioned &&
+            widget.bottom == -1 &&
+            widget.child is ClipRRect,
+      ),
     );
     expect(positioned, findsOneWidget);
+
+    final clipRRectFinder = find.descendant(
+      of: find.byType(Positioned),
+      matching: find.byType(ClipRRect),
+    );
+    expect(clipRRectFinder, findsOneWidget);
+    final clipRRect = tester.widget<ClipRRect>(clipRRectFinder);
+    expect(
+      (clipRRect.borderRadius as BorderRadius).bottomLeft,
+      const Radius.circular(36),
+    );
+    expect(
+      (clipRRect.borderRadius as BorderRadius).bottomRight,
+      const Radius.circular(36),
+    );
 
     // Check for the BackdropFilter
     final backdropFilter = find.descendant(
@@ -82,7 +100,7 @@ void main() {
     expect(backdropFilter, findsOneWidget);
 
     // Check for the text container
-    final textContainer = find.descendant(
+    final textContainerFinder = find.descendant(
       of: find.byType(BackdropFilter),
       matching: find.byWidgetPredicate((widget) =>
           widget is Container &&
@@ -90,17 +108,27 @@ void main() {
           widget.decoration is BoxDecoration &&
           widget.child is Column),
     );
-    expect(textContainer, findsOneWidget);
+    expect(textContainerFinder, findsOneWidget);
+    final textContainer = tester.widget<Container>(textContainerFinder);
+    expect((textContainer.padding as EdgeInsets).horizontal, 48);
+    expect((textContainer.padding as EdgeInsets).vertical, 16);
 
-    final textContainerDecoration =
-        tester.widget<Container>(textContainer).decoration as BoxDecoration;
+    final textContainerDecoration = textContainer.decoration as BoxDecoration;
     expect(textContainerDecoration.gradient, isA<LinearGradient>());
+    final linearGradient = textContainerDecoration.gradient as LinearGradient;
+
+    expect(linearGradient.begin, const Alignment(0.00, -1.00));
+    expect(linearGradient.end, const Alignment(0, 1));
+    expect(linearGradient.colors, [
+      MainColor.black120911,
+      MainColor.black0D0D0D,
+    ]);
 
     find.text(music.title!);
     find.text(music.artist!);
   });
 
-  testWidgets('Cover music card render local source',
+  testWidgets('CoverMusicCard render local source',
       (WidgetTester tester) async {
     // Create a mock Music object for testing
     final music = Music(
@@ -133,7 +161,7 @@ void main() {
     expect(decoration.shape, isA<RoundedRectangleBorder>());
   });
 
-  testWidgets('Cover music card render network source',
+  testWidgets('CoverMusicCard render network source',
       (WidgetTester tester) async {
     // Create a mock Music object for testing
     final music = Music(
@@ -156,20 +184,23 @@ void main() {
       (widget) =>
           widget is Container &&
           widget.decoration is ShapeDecoration &&
-          widget.child is CachedNetworkImage,
+          widget.child is ClipRRect,
     );
     expect(imageContainer, findsOneWidget);
-    final networkImage =
-        tester.widget<CachedNetworkImage>(find.byType(CachedNetworkImage));
+
+    final clipRRect =
+        tester.widget<Container>(imageContainer).child as ClipRRect;
+    expect(clipRRect.borderRadius, BorderRadius.circular(36));
+    expect(clipRRect.child, isA<CachedNetworkImage>());
+
+    final networkImage = clipRRect.child as CachedNetworkImage;
     expect(networkImage.imageUrl, music.coverPath);
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(networkImage.imageBuilder, isNotNull,
-        reason:
-            'CachedNetworkImage widget should have imageBuilder as specified');
+    expect(networkImage.fit, BoxFit.cover);
   });
 
-  testWidgets('Structure of cover video card widget is built correctly',
+  testWidgets('Structure of coverVideoCard widget is built correctly',
       (WidgetTester tester) async {
     // Create a mock Music object for testing
     final video = Video(
@@ -258,7 +289,7 @@ void main() {
         findsAtLeastNWidgets(2));
   });
 
-  testWidgets('Cover video card render local source',
+  testWidgets('CoverVideoCard render local source',
       (WidgetTester tester) async {
     final video = Video(
       title: "Aquaman And The Lost Kingdom | Trailer",
@@ -302,7 +333,7 @@ void main() {
     }
   });
 
-  testWidgets('Cover video card render network source',
+  testWidgets('CoverVideoCard render network source',
       (WidgetTester tester) async {
     final video = Video(
       title: "FutureBuilder (Widget of the Week)",
@@ -333,19 +364,20 @@ void main() {
             widget is SizedBox &&
             widget.width == double.infinity &&
             widget.height == 270 &&
-            widget.child is CachedNetworkImage,
+            widget.child is ClipRRect,
       ),
     );
     expect(imageWrapper, findsOneWidget);
 
-    final networkImage =
-        tester.widget<CachedNetworkImage>(find.byType(CachedNetworkImage));
+    // here
+    final clipRRect = tester.widget<SizedBox>(imageWrapper).child as ClipRRect;
+    expect(clipRRect.child, isA<CachedNetworkImage>());
+
+    final networkImage = clipRRect.child as CachedNetworkImage;
     expect(networkImage.imageUrl, video.coverPath);
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(networkImage.imageBuilder, isNotNull,
-        reason:
-            'CachedNetworkImage widget should have imageBuilder as specified');
+    expect(networkImage.fit, BoxFit.cover);
   });
 
   /// HOME TEST

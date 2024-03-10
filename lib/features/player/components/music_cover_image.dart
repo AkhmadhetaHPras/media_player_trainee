@@ -28,24 +28,17 @@ class MusicCoverImage extends StatelessWidget {
                 )
               : null),
       child: sourceType != "local"
-          ? CachedNetworkImage(
-              imageUrl: cover,
-              progressIndicatorBuilder: (context, url, progress) => Center(
-                child: CircularProgressIndicator(
-                  color: MainColor.purple5A579C,
-                  value: progress.progress,
-                ),
-              ),
-              imageBuilder: (context, imageProvider) => Container(
-                width: double.infinity,
-                height: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: CachedNetworkImage(
+                imageUrl: cover,
+                progressIndicatorBuilder: (context, url, progress) => Center(
+                  child: CircularProgressIndicator(
+                    color: MainColor.purple5A579C,
+                    value: progress.progress,
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
+                fit: BoxFit.cover,
               ),
             )
           : null,

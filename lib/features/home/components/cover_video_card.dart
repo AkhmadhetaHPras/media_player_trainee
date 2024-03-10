@@ -35,21 +35,16 @@ class CoverVideoCard extends StatelessWidget {
                     video.coverPath!,
                     fit: BoxFit.cover,
                   )
-                : CachedNetworkImage(
-                    imageUrl: video.coverPath!,
-                    progressIndicatorBuilder: (context, url, progress) =>
-                        const Center(
-                      child: CircularProgressIndicator(
-                        color: MainColor.purple5A579C,
-                      ),
-                    ),
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
+                : ClipRRect(
+                    child: CachedNetworkImage(
+                      imageUrl: video.coverPath!,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          const Center(
+                        child: CircularProgressIndicator(
+                          color: MainColor.purple5A579C,
                         ),
                       ),
+                      fit: BoxFit.cover,
                     ),
                   ),
           ),

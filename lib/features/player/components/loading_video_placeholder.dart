@@ -25,15 +25,10 @@ class LoadingVideoPlaceholder extends StatelessWidget {
                   cover,
                   fit: BoxFit.cover,
                 )
-              : CachedNetworkImage(
-                  imageUrl: cover,
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+              : ClipRRect(
+                  child: CachedNetworkImage(
+                    imageUrl: cover,
+                    fit: BoxFit.cover,
                   ),
                 ),
         ),

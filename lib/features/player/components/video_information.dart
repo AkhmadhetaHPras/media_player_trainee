@@ -60,23 +60,21 @@ class _VideoInformationState extends State<VideoInformation> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
             children: [
-              CachedNetworkImage(
-                imageUrl: widget.video.creatorPhoto ?? '',
-                progressIndicatorBuilder: (context, url, progress) =>
-                    const Center(
-                  child: CircularProgressIndicator(
-                    color: MainColor.purple5A579C,
-                  ),
-                ),
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
+              SizedBox(
+                width: 36,
+                height: 36,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.video.creatorPhoto ?? '',
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(
+                        color: MainColor.purple5A579C,
+                      ),
                     ),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),

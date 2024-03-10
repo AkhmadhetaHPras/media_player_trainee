@@ -127,6 +127,10 @@ void main() {
 
     expect(videoWrapperFinder, findsOneWidget);
     expect(stackWidget.children.last, isA<CircularProgressIndicator>());
+    expect(
+      (stackWidget.children.last as CircularProgressIndicator).color,
+      MainColor.purple5A579C,
+    );
   });
 
   testWidgets('LoadingVideoPlaceholder render local source',
@@ -206,18 +210,21 @@ void main() {
           widget is SizedBox &&
           widget.width == double.infinity &&
           widget.height == 270 &&
-          widget.child is CachedNetworkImage),
+          widget.child is ClipRRect),
     );
 
     expect(videoWrapperFinder, findsOneWidget);
-    final networkImage =
-        tester.widget<CachedNetworkImage>(find.byType(CachedNetworkImage));
+
+    final clipRRect =
+        tester.widget<SizedBox>(videoWrapperFinder).child as ClipRRect;
+
+    expect(clipRRect.child, isA<CachedNetworkImage>());
+
+    final networkImage = clipRRect.child as CachedNetworkImage;
     expect(networkImage.imageUrl, networkSourceVideo.coverPath);
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(networkImage.imageBuilder, isNotNull,
-        reason:
-            'CachedNetworkImage widget should have imageBuilder as specified');
+    expect(networkImage.fit, BoxFit.cover);
   });
 
   testWidgets('Structur of VideoIndicator widget is built correctly',
@@ -343,14 +350,26 @@ void main() {
     );
     expect(rowChannelWrapperFinder, findsOneWidget);
 
-    final channelImageFinder = find.descendant(
+    final sizedboxWrapperChannelImageFinder = find.descendant(
       of: rowChannelWrapperFinder,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is SizedBox &&
+            widget.height == 36 &&
+            widget.width == 36 &&
+            widget.child is ClipRRect,
+      ),
+    );
+    expect(sizedboxWrapperChannelImageFinder, findsOneWidget);
+
+    final channelImageFinder = find.descendant(
+      of: sizedboxWrapperChannelImageFinder,
       matching: find.byType(CachedNetworkImage),
     );
     expect(channelImageFinder, findsOneWidget);
     final channelImage = tester.widget<CachedNetworkImage>(channelImageFinder);
     expect(channelImage.imageUrl, localSourceVideo.creatorPhoto);
-    expect(channelImage.imageBuilder, isNotNull);
+    expect(channelImage.fit, BoxFit.cover);
 
     final channelImageLoader = find.byType(CircularProgressIndicator);
     expect(channelImageLoader, findsOneWidget);

@@ -43,8 +43,11 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byType(CoverVideoCard).first);
-    await tester.pumpAndSettle();
+    final firstVideoFinder = find.byType(CoverVideoCard).first;
+
+    await tester.tap(firstVideoFinder);
+    await tester.pump();
+    await tester.pump();
 
     if (capturedVideo != null) {
       // final Video video = capturedVideo!;

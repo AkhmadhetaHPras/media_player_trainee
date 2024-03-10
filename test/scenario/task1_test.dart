@@ -9,23 +9,32 @@ import 'package:media_player/features/splash/splash_screen.dart';
 void main() {
   testWidgets('Structure of the CircleComponent widget is built correctly',
       (WidgetTester tester) async {
-    // Create the widget with default values
     const double scale = 1.5;
     await tester.pumpWidget(const CircleComponent(scale: scale));
 
     // Find the CircleComponent in the widget tree
     final circle = find.byType(CircleComponent);
-    expect(circle, findsOneWidget, reason: 'CircleComponent widget not found');
+    expect(
+      circle,
+      findsOneWidget,
+      reason: 'CircleComponent widget not found',
+    );
 
     // Assert the ClipRRect and Transform.scale properties
     final clipRectFinder = find.byType(ClipRRect).first;
-    expect(clipRectFinder, findsOneWidget,
-        reason: 'ClipRRect widget not found within CircleComponent');
+    expect(
+      clipRectFinder,
+      findsOneWidget,
+      reason: 'ClipRRect widget not found within CircleComponent',
+    );
 
     final clipRRect = tester.widget<ClipRRect>(clipRectFinder);
-    expect(clipRRect.child, isA<Transform>(),
-        reason:
-            'Expected a Transform widget as child of ClipRRect, found ${clipRRect.child}');
+    expect(
+      clipRRect.child,
+      isA<Transform>(),
+      reason:
+          'Expected a Transform widget as child of ClipRRect, found ${clipRRect.child}',
+    );
 
     final transform = clipRRect.child as Transform;
     expect(
@@ -35,20 +44,32 @@ void main() {
     );
 
     // Assert the default Container child
-    expect(transform.child, isA<Container>(),
-        reason:
-            'Expected a Container widget as child of Transform, found ${transform.child}');
+    expect(
+      transform.child,
+      isA<Container>(),
+      reason:
+          'Expected a Container widget as child of Transform, found ${transform.child}',
+    );
     final container = transform.child as Container;
 
-    expect(container.decoration, isA<BoxDecoration>(),
-        reason:
-            'Expected a BoxDecoration for Container decoration, found ${container.decoration}');
+    expect(
+      container.decoration,
+      isA<BoxDecoration>(),
+      reason:
+          'Expected a BoxDecoration for Container decoration, found ${container.decoration}',
+    );
     final decoration = container.decoration as BoxDecoration;
 
-    expect(decoration.shape, equals(BoxShape.circle),
-        reason: 'Container decoration shape is not BoxShape.circle');
-    expect(decoration.color, isNull,
-        reason: 'Container decoration color is not null');
+    expect(
+      decoration.shape,
+      equals(BoxShape.circle),
+      reason: 'Container decoration shape is not BoxShape.circle',
+    );
+    expect(
+      decoration.color,
+      isNull,
+      reason: 'Container decoration color is not null',
+    );
   });
 
   testWidgets('CircleComponent renders with color',

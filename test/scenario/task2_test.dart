@@ -298,18 +298,18 @@ void main() {
       ),
     ));
 
-    // check if container child is CachedNetworkImage when music sourceType is network
+    // check if container child is ClipRRect when music sourceType is network
     final imageContainer = find.byWidgetPredicate(
       (widget) =>
           widget is Container &&
-          widget.decoration is ShapeDecoration &&
+          widget.decoration == null &&
           widget.child is ClipRRect,
     );
     expect(
       imageContainer,
       findsOneWidget,
       reason:
-          'For network music source, Container (first child of Stack) child should be a ClipRRect widget',
+          'For network music source, Container (first child of Stack) child should be a ClipRRect widget and its decoration should be null',
     );
 
     final clipRRect =

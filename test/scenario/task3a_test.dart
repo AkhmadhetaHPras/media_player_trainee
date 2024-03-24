@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,23 +52,18 @@ final routes = <String, WidgetBuilder>{
 };
 
 void main() {
-  late MockNavigatorObserver mockNavigatorObserver;
-
-  setUp(() {
-    mockNavigatorObserver = MockNavigatorObserver();
-    capturedMusic = null;
-  });
-
   void timeDisplayCheck(Slider slider, Duration duration) {
-    expect(find.byType(TimeDisplay), findsOneWidget,
-        reason: 'Music player must have a TimeDisplay component');
     expect(
-        find.text(
-            const Duration().inSeconds.toDouble().toString().split(".")[0]),
-        findsOneWidget,
-        reason: 'Music player display music position');
-    expect(find.text(duration.toString().split(".")[0]), findsOneWidget,
-        reason: 'Music player display music duration');
+      find.byType(TimeDisplay),
+      findsOneWidget,
+      reason: 'Music player must have a TimeDisplay component',
+    );
+    expect(
+      find.text(duration.toString().split(".")[0]),
+      findsNWidgets(2),
+      reason:
+          'Music player does not display text of music position and music duration (both initially 0:00:00)',
+    );
   }
 
   testWidgets('MusicCoverImage widget render local source',
@@ -83,24 +77,53 @@ void main() {
       ),
     );
 
-    expect(find.byType(MusicCoverImage), findsOneWidget);
+    expect(
+      find.byType(MusicCoverImage),
+      findsOneWidget,
+      reason: 'Expected to find a MusicCoverImage widget in the widget tree',
+    );
     final firstontainerFinder = find.byType(Container).first;
-    expect(firstontainerFinder, findsOneWidget);
+    expect(
+      firstontainerFinder,
+      findsOneWidget,
+      reason: 'Expected a Container widget as its root widget',
+    );
     final firstContainer = tester.widget<Container>(firstontainerFinder);
-    expect(firstContainer.decoration, isA<BoxDecoration>());
-    expect(firstContainer.child, isNull);
+    expect(
+      firstContainer.decoration,
+      isA<BoxDecoration>(),
+      reason: 'Container (root widget) decoration should be a BoxDecoration',
+    );
+    expect(
+      firstContainer.child,
+      isNull,
+      reason: 'Container (root widget) should not have a child widget',
+    );
     expect(
       (firstContainer.decoration as BoxDecoration).borderRadius,
       BorderRadius.circular(20),
+      reason:
+          'Container (root widget) decoration should have a borderRadius circulars of 20',
     );
     expect(
       (firstContainer.decoration as BoxDecoration).image,
       isA<DecorationImage>(),
+      reason:
+          'Container (root widget) decoration should have an image property (DecorationImage)',
     );
     final decorationImage =
         (firstContainer.decoration as BoxDecoration).image as DecorationImage;
-    expect(decorationImage.image, AssetImage(localMusic.coverPath!));
-    expect(decorationImage.fit, BoxFit.cover);
+    expect(
+      decorationImage.image,
+      AssetImage(localMusic.coverPath!),
+      reason:
+          'Image property of DecorationImage should use AssetImage with localMusic.coverPath',
+    );
+    expect(
+      decorationImage.fit,
+      BoxFit.cover,
+      reason: 'DecorationImage fit should be BoxFit.cover',
+    );
   });
 
   testWidgets('MusicCoverImage widget render network source',
@@ -114,40 +137,67 @@ void main() {
       ),
     );
 
-    expect(find.byType(MusicCoverImage), findsOneWidget);
+    expect(
+      find.byType(MusicCoverImage),
+      findsOneWidget,
+      reason: 'Expected to find a MusicCoverImage widget in the widget tree',
+    );
     final firstontainerFinder = find.byType(Container).first;
-    expect(firstontainerFinder, findsOneWidget);
+    expect(
+      firstontainerFinder,
+      findsOneWidget,
+      reason: 'Expected a Container widget as its root widget',
+    );
     final firstContainer = tester.widget<Container>(firstontainerFinder);
-    expect(firstContainer.decoration, isA<BoxDecoration>());
     expect(
-      (firstContainer.decoration as BoxDecoration).borderRadius,
-      BorderRadius.circular(20),
-    );
-    expect(
-      (firstContainer.decoration as BoxDecoration).image,
+      firstContainer.decoration,
       isNull,
+      reason:
+          'Container (root widget) decoration should be null for network source',
     );
-    expect(firstContainer.child, isA<ClipRRect>());
+    expect(
+      firstContainer.child,
+      isA<ClipRRect>(),
+      reason: 'Container child should be a ClipRRect for network source',
+    );
     final clipRRect = firstContainer.child as ClipRRect;
     expect(
       clipRRect.borderRadius,
       BorderRadius.circular(20),
+      reason: 'ClipRRect should have a borderRadius circular of 20',
     );
     expect(
       clipRRect.child,
       isA<CachedNetworkImage>(),
+      reason:
+          'ClipRRect child should be a CachedNetworkImage for network source',
     );
     final networkImage = clipRRect.child as CachedNetworkImage;
 
-    expect(networkImage.imageUrl, networkMusic.coverPath);
-
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(networkImage.fit, BoxFit.cover);
+    expect(
+      networkImage.imageUrl,
+      networkMusic.coverPath,
+      reason: 'CachedNetworkImage imageUrl should match music.coverPath',
+    );
+    expect(
+      networkImage.fit,
+      BoxFit.cover,
+      reason: 'CachedNetworkImage fit should be BoxFit.cover',
+    );
+    expect(
+      find.byType(CircularProgressIndicator),
+      findsOneWidget,
+      reason:
+          'Expected to find a CircularProgressIndicator while loading network image',
+    );
   });
 
   testWidgets(
       'MusicPlayer display music cover image, controll button, and its informations',
       (WidgetTester tester) async {
+    MockNavigatorObserver mockNavigatorObserver = MockNavigatorObserver();
+    capturedMusic = null;
+
     await tester.pumpWidget(
       MaterialApp(
         home: const Home(),
@@ -156,65 +206,137 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byType(CoverMusicCard).first);
+    final firstMusicFinder = find.byType(CoverMusicCard).first;
+    expect(
+      firstMusicFinder,
+      findsOneWidget,
+      reason: 'Cannot find the first CoverMusicCard widget in Home',
+    );
+    await tester.tap(firstMusicFinder);
     await tester.pumpAndSettle();
 
     if (capturedMusic != null) {
       final Music music = capturedMusic!;
       final musicPlayerFinder = find.byType(MusicPlayer);
-      expect(musicPlayerFinder, findsOneWidget);
+      expect(
+        musicPlayerFinder,
+        findsOneWidget,
+        reason:
+            'Expected to navigate to the MusicPlayer after tapping CoverMusicCard component',
+      );
 
       /// display music cover image and its informations
       final musicCoverImageFinder = find.byType(MusicCoverImage);
       final musicCoverImage =
           tester.widget<MusicCoverImage>(musicCoverImageFinder);
-      expect(musicCoverImageFinder, findsOneWidget);
-      expect(musicCoverImage.sourceType, music.sourceType);
-      expect(musicCoverImage.cover, music.coverPath);
+      expect(
+        musicCoverImageFinder,
+        findsOneWidget,
+        reason: 'Expected to find a MusicCoverImage widget in MusicPlayer',
+      );
+      expect(
+        musicCoverImage.sourceType,
+        music.sourceType,
+        reason: 'MusicCoverImage sourceType should match music.sourceType',
+      );
+      expect(
+        musicCoverImage.cover,
+        music.coverPath,
+        reason: 'MusicCoverImage cover should match music.coverPath',
+      );
 
-      expect(find.text(music.title!), findsOneWidget);
-      expect(find.text(music.artist!), findsOneWidget);
-      expect(find.text(music.albumName!), findsOneWidget);
-      expect(find.text(music.releaseYear!), findsOneWidget);
+      expect(
+        find.text(music.title!),
+        findsOneWidget,
+        reason: 'Expected to find music title text',
+      );
+      expect(
+        find.text(music.artist!),
+        findsOneWidget,
+        reason: 'Expected to find music artist text',
+      );
+      expect(
+        find.text(music.albumName!),
+        findsOneWidget,
+        reason: 'Expected to find music album name text',
+      );
+      expect(
+        find.text(music.releaseYear!),
+        findsOneWidget,
+        reason: 'Expected to find music release year text',
+      );
 
       /// has a slider with time and duration according to the music source
       final sliderFinder = find.byType(Slider);
+
+      expect(sliderFinder, findsOneWidget,
+          reason: 'Expected to find a Slider widget');
       final slider = tester.widget<Slider>(sliderFinder);
+      expect(
+        slider.value,
+        0.0,
+        reason: 'Slider value should be initially 0.0',
+      );
+      expect(
+        slider.min,
+        0.0,
+        reason: 'Slider minimum value should be 0.0',
+      );
+      expect(
+        slider.thumbColor,
+        MainColor.purple5A579C,
+        reason: 'Slider thumb color should match MainColor.purple5A579C',
+      );
+      expect(
+        slider.activeColor,
+        MainColor.purple5A579C,
+        reason: 'Slider active color should match MainColor.purple5A579C',
+      );
 
-      expect(sliderFinder, findsOneWidget);
-      expect(slider.value, 0.0);
-      expect(slider.min, 0.0);
-      expect(slider.thumbColor, MainColor.purple5A579C);
-      expect(slider.activeColor, MainColor.purple5A579C);
-
-      AudioPlayer player = AudioPlayer();
-      player
-          .setSource(music.sourceType == "local"
-              ? AssetSource(
-                  music.source!.replaceFirst("assets/", ""),
-                )
-              : UrlSource(music.source!))
-          .then((value) async {
-        Duration duration = await player.getDuration() ?? const Duration();
-        expect(slider.max, duration, reason: '');
-        timeDisplayCheck(slider, duration);
-      });
+      const initDuration = Duration();
+      expect(
+        slider.max,
+        initDuration.inSeconds.toDouble(),
+        reason: 'Slider max value should match music duration',
+      );
+      timeDisplayCheck(slider, initDuration);
 
       final icnButtonFinder = find.byType(ControllButton);
-      expect(icnButtonFinder, findsOneWidget);
+      expect(
+        icnButtonFinder,
+        findsOneWidget,
+        reason: 'Expected to find a ControllButton widget',
+      );
       final icnButton = tester.widget<ControllButton>(icnButtonFinder);
-      expect(icnButton.icon, Icons.play_arrow);
-      expect(icnButton.bgColor, MainColor.whiteF2F0EB);
-      expect(icnButton.splashR, 25);
-      expect(icnButton.icSize, 32);
+      expect(
+        icnButton.icon,
+        Icons.play_arrow,
+        reason: 'ControllButton icon should be play_arrow',
+      );
+      expect(
+        icnButton.bgColor,
+        MainColor.whiteF2F0EB,
+        reason:
+            'ControllButton background color should match MainColor.whiteF2F0EB',
+      );
+      expect(icnButton.splashR, 25,
+          reason: 'ControllButton splash radius should be 25');
+      expect(icnButton.icSize, 32,
+          reason: 'ControllButton icon size should be 32');
 
       final icnButtonBackFinder = find.byKey(const Key('back_btn'));
 
       await tester.tap(icnButtonBackFinder);
       await tester.pump();
-      expect(back, isTrue);
+      expect(
+        back,
+        isTrue,
+        reason: 'Expected to navigate back after tapping back button',
+      );
     } else {
-      fail('Music object not passing to the music player page via arguments');
+      fail(
+        'The music object is not forwarded to the MussicPlayer page via an argument',
+      );
     }
   });
 }

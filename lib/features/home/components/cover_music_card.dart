@@ -30,19 +30,19 @@ class CoverMusicCard extends StatelessWidget {
           Container(
             width: 190,
             height: 200,
-            decoration: ShapeDecoration(
-              image: music.sourceType == "local"
-                  ? DecorationImage(
+            decoration: music.sourceType == "local"
+                ? ShapeDecoration(
+                    image: DecorationImage(
                       image: AssetImage(
                         music.coverPath!,
                       ),
                       fit: BoxFit.cover,
-                    )
-                  : null,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(36),
-              ),
-            ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(36),
+                    ),
+                  )
+                : null,
             child: music.sourceType != "local"
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(36),

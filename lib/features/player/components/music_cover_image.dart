@@ -17,16 +17,17 @@ class MusicCoverImage extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 200,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          image: sourceType == "local"
-              ? DecorationImage(
-                  image: AssetImage(
-                    cover,
-                  ),
-                  fit: BoxFit.cover,
-                )
-              : null),
+      decoration: sourceType == "local"
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                image: AssetImage(
+                  cover,
+                ),
+                fit: BoxFit.cover,
+              ),
+            )
+          : null,
       child: sourceType != "local"
           ? ClipRRect(
               borderRadius: BorderRadius.circular(20),

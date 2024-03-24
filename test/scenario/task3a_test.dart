@@ -2,15 +2,33 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_player/config/themes/main_color.dart';
 import 'package:media_player/data/music_model.dart';
 import 'package:media_player/features/home/components/cover_music_card.dart';
 import 'package:media_player/features/home/home.dart';
+import 'package:media_player/features/player/components/controll_button.dart';
 import 'package:media_player/features/player/components/music_cover_image.dart';
 import 'package:media_player/features/player/components/time_display.dart';
 import 'package:media_player/features/player/music_player.dart';
 import 'package:mockito/mockito.dart';
 
+final localMusic = Music(
+  title: 'Night Changes',
+  artist: 'One Direction',
+  coverPath: 'assets/imgs/cover_one_direction_night_changes.jpeg',
+  sourceType: 'local',
+);
+
+final networkMusic = Music(
+  title: 'STAY',
+  artist: 'The Kid LAROI, Justin Bieber',
+  coverPath:
+      'https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-player/cover_justin_bieber_stay.jpeg?raw=true',
+  sourceType: 'network',
+);
+
 Music? capturedMusic;
+bool back = false;
 
 class MockNavigatorObserver extends Mock
     implements NavigatorObserver, WidgetsBindingObserver {
@@ -19,6 +37,13 @@ class MockNavigatorObserver extends Mock
     // print('pushed $route');
     if (route.settings.arguments is Music) {
       capturedMusic = route.settings.arguments as Music;
+    }
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    if (route.settings.name == '/music-player') {
+      back = true;
     }
   }
 }
@@ -32,7 +57,6 @@ void main() {
 
   setUp(() {
     mockNavigatorObserver = MockNavigatorObserver();
-    WidgetsBinding.instance.addObserver(mockNavigatorObserver);
     capturedMusic = null;
   });
 
@@ -50,17 +74,11 @@ void main() {
 
   testWidgets('MusicCoverImage widget render local source',
       (WidgetTester tester) async {
-    final music = Music(
-      title: 'Night Changes',
-      artist: 'One Direction',
-      coverPath: 'assets/imgs/cover_one_direction_night_changes.jpeg',
-      sourceType: 'local',
-    );
     await tester.pumpWidget(
       MaterialApp(
         home: MusicCoverImage(
-          sourceType: music.sourceType!,
-          cover: music.coverPath!,
+          sourceType: localMusic.sourceType!,
+          cover: localMusic.coverPath!,
         ),
       ),
     );
@@ -81,24 +99,17 @@ void main() {
     );
     final decorationImage =
         (firstContainer.decoration as BoxDecoration).image as DecorationImage;
-    expect(decorationImage.image, AssetImage(music.coverPath!));
+    expect(decorationImage.image, AssetImage(localMusic.coverPath!));
     expect(decorationImage.fit, BoxFit.cover);
   });
 
   testWidgets('MusicCoverImage widget render network source',
       (WidgetTester tester) async {
-    final music = Music(
-      title: 'STAY',
-      artist: 'The Kid LAROI, Justin Bieber',
-      coverPath:
-          'https://github.com/AkhmadhetaHPras/host-assets/blob/main/media-player/cover_justin_bieber_stay.jpeg?raw=true',
-      sourceType: 'network',
-    );
     await tester.pumpWidget(
       MaterialApp(
         home: MusicCoverImage(
-          sourceType: music.sourceType!,
-          cover: music.coverPath!,
+          sourceType: networkMusic.sourceType!,
+          cover: networkMusic.coverPath!,
         ),
       ),
     );
@@ -128,13 +139,14 @@ void main() {
     );
     final networkImage = clipRRect.child as CachedNetworkImage;
 
-    expect(networkImage.imageUrl, music.coverPath);
+    expect(networkImage.imageUrl, networkMusic.coverPath);
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(networkImage.fit, BoxFit.cover);
   });
 
-  testWidgets('Music player display music cover image and its informations',
+  testWidgets(
+      'MusicPlayer display music cover image, controll button, and its informations',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -149,6 +161,8 @@ void main() {
 
     if (capturedMusic != null) {
       final Music music = capturedMusic!;
+      final musicPlayerFinder = find.byType(MusicPlayer);
+      expect(musicPlayerFinder, findsOneWidget);
 
       /// display music cover image and its informations
       final musicCoverImageFinder = find.byType(MusicCoverImage);
@@ -170,6 +184,8 @@ void main() {
       expect(sliderFinder, findsOneWidget);
       expect(slider.value, 0.0);
       expect(slider.min, 0.0);
+      expect(slider.thumbColor, MainColor.purple5A579C);
+      expect(slider.activeColor, MainColor.purple5A579C);
 
       AudioPlayer player = AudioPlayer();
       player
@@ -183,12 +199,22 @@ void main() {
         expect(slider.max, duration, reason: '');
         timeDisplayCheck(slider, duration);
       });
+
+      final icnButtonFinder = find.byType(ControllButton);
+      expect(icnButtonFinder, findsOneWidget);
+      final icnButton = tester.widget<ControllButton>(icnButtonFinder);
+      expect(icnButton.icon, Icons.play_arrow);
+      expect(icnButton.bgColor, MainColor.whiteF2F0EB);
+      expect(icnButton.splashR, 25);
+      expect(icnButton.icSize, 32);
+
+      final icnButtonBackFinder = find.byKey(const Key('back_btn'));
+
+      await tester.tap(icnButtonBackFinder);
+      await tester.pump();
+      expect(back, isTrue);
     } else {
       fail('Music object not passing to the music player page via arguments');
     }
-  });
-
-  tearDown(() {
-    WidgetsBinding.instance.removeObserver(mockNavigatorObserver);
   });
 }

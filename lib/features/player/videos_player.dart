@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:media_player/config/themes/main_color.dart';
 import 'package:media_player/data/video_model.dart';
+import 'package:media_player/features/player/components/controll_button.dart';
 import 'package:media_player/features/player/components/loading_video_placeholder.dart';
 import 'package:media_player/features/player/components/video_information.dart';
 import 'package:media_player/features/player/components/video_indicator.dart';
@@ -132,32 +133,25 @@ class _VideosPlayerState extends State<VideosPlayer> {
                           AnimatedOpacity(
                             duration: animDuration,
                             opacity: _isVisible ? 1 : 0,
-
-                            /// video button control
-                            child: Material(
-                              color: MainColor.black000000.withOpacity(0.2),
-                              shape: const OvalBorder(),
-                              child: IconButton(
-                                iconSize: 36,
-                                splashRadius: 26,
-                                onPressed: () {
-                                  setState(() {
-                                    if (_isVisible) {
-                                      if (_controller.value.isPlaying) {
-                                        _controller.pause();
-                                      } else {
-                                        _controller.play();
-                                        offVisible();
-                                      }
+                            child: ControllButton(
+                              icon: _controller.value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                              onPressed: () {
+                                setState(() {
+                                  if (_isVisible) {
+                                    if (_controller.value.isPlaying) {
+                                      _controller.pause();
+                                    } else {
+                                      _controller.play();
+                                      offVisible();
                                     }
-                                  });
-                                },
-                                icon: Icon(
-                                  _controller.value.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                ),
-                              ),
+                                  }
+                                });
+                              },
+                              bgColor: MainColor.black000000.withOpacity(0.2),
+                              splashR: 26,
+                              icSize: 36,
                             ),
                           )
                         ],

@@ -33,7 +33,7 @@ void main() {
     capturedVideo = null;
   });
 
-  testWidgets('Video player display its informations',
+  testWidgets('VideosPlayer display its informations',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(

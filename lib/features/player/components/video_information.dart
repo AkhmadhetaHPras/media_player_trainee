@@ -19,9 +19,9 @@ class VideoInformation extends StatefulWidget {
 }
 
 class _VideoInformationState extends State<VideoInformation> {
-  bool _isShowMore = true;
+  bool _canShowMore = true;
 
-  bool _hasThreeLine(String? deskripsi) {
+  bool _hasMoreThanThreeLine(String? deskripsi) {
     final span = TextSpan(
       text: deskripsi,
       style: MainTextStyle.poppinsW400.copyWith(
@@ -38,7 +38,7 @@ class _VideoInformationState extends State<VideoInformation> {
 
   switchShowMore() {
     setState(() {
-      _isShowMore = !_isShowMore;
+      _canShowMore = !_canShowMore;
     });
   }
 
@@ -109,7 +109,8 @@ class _VideoInformationState extends State<VideoInformation> {
           ],
         ),
         const SizedBox(height: 12),
-        if (_hasThreeLine(widget.video.description) && _isShowMore) ...[
+        if (_hasMoreThanThreeLine(widget.video.description) &&
+            _canShowMore) ...[
           Text(
             widget.video.description!,
             maxLines: 3,
@@ -137,16 +138,17 @@ class _VideoInformationState extends State<VideoInformation> {
             ),
           ),
           const SizedBox(height: 12),
-          InkWell(
-            onTap: switchShowMore,
-            child: Text(
-              'Less',
-              style: MainTextStyle.poppinsW400.copyWith(
-                fontSize: 12,
-                color: Colors.blue,
+          if (_hasMoreThanThreeLine(widget.video.description))
+            InkWell(
+              onTap: switchShowMore,
+              child: Text(
+                'Less',
+                style: MainTextStyle.poppinsW400.copyWith(
+                  fontSize: 12,
+                  color: Colors.blue,
+                ),
               ),
             ),
-          ),
         ]
       ],
     );

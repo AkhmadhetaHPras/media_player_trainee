@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:media_player/config/themes/main_color.dart';
 import 'package:media_player/config/themes/main_text_style.dart';
 import 'package:media_player/data/music_model.dart';
+import 'package:media_player/features/player/components/controll_button.dart';
 import 'package:media_player/features/player/components/music_cover_image.dart';
 import 'package:media_player/features/player/components/time_display.dart';
 import 'package:media_player/shared_components/custom_app_bar.dart';
@@ -12,15 +13,16 @@ class MusicPlayer extends StatefulWidget {
   const MusicPlayer({super.key});
 
   @override
-  State<MusicPlayer> createState() => _MusicPlayerState();
+  State<MusicPlayer> createState() => MusicPlayerState();
 }
 
-class _MusicPlayerState extends State<MusicPlayer> {
+@visibleForTesting
+class MusicPlayerState extends State<MusicPlayer> {
   AudioPlayer newPlayer = AudioPlayer();
 
   bool play = false;
-  Duration _duration = const Duration();
-  Duration _position = const Duration();
+  Duration duration = const Duration();
+  Duration position = const Duration();
 
   @override
   void initState() {
@@ -35,12 +37,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   late Music music;
-  late Source source;
+  Source? source;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     music = ModalRoute.of(context)!.settings.arguments as Music;
+    initPlayerState();
+  }
+
+  initPlayerState() {
     setState(() {
       source = music.sourceType == "local"
           ? AssetSource(
@@ -48,24 +54,20 @@ class _MusicPlayerState extends State<MusicPlayer> {
             )
           : UrlSource(music.source!);
     });
-    newPlayer.setSource(source).then((value) {
-      setState(() async {
-        _duration = await newPlayer.getDuration() ?? const Duration();
+    newPlayer.setSource(source!).then((value) async {
+      final dur = await newPlayer.getDuration() ?? const Duration();
+      setState(() {
+        duration = dur;
       });
     });
   }
 
   void initPlayer() async {
-    newPlayer.onDurationChanged.listen((dur) {
-      setState(() {
-        _duration = dur;
-      });
-    });
     newPlayer.onPositionChanged.listen((pos) {
       setState(() {
-        _position = pos;
+        position = pos;
       });
-      if (pos.inSeconds.toDouble() == _duration.inSeconds.toDouble()) {
+      if (pos.inSeconds.toDouble() == duration.inSeconds.toDouble()) {
         setState(() {
           play = false;
         });
@@ -73,14 +75,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
     });
   }
 
-  playAudio() {
+  Future<void> playAudio() async {
     newPlayer.setVolume(1.0);
     newPlayer.play(
-      music.sourceType == "local"
-          ? AssetSource(
-              music.source!.replaceFirst("assets/", ""),
-            )
-          : UrlSource(music.source!),
+      source!,
       mode: PlayerMode.mediaPlayer,
     );
     setState(() {
@@ -88,23 +86,23 @@ class _MusicPlayerState extends State<MusicPlayer> {
     });
   }
 
-  pauseAudio() {
+  Future<void> pauseAudio() async {
     newPlayer.pause();
     setState(() {
       play = false;
     });
   }
 
-  playPause() {
+  Future<void> playPause() async {
     if (play == false) {
-      playAudio();
+      await playAudio();
     } else {
-      pauseAudio();
+      await pauseAudio();
     }
   }
 
-  void seekToSecond(int second) {
-    Duration newDuration = Duration(seconds: second);
+  void seekToSecond(double value) {
+    Duration newDuration = Duration(seconds: value.toInt());
 
     newPlayer.seek(newDuration);
   }
@@ -115,6 +113,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       backgroundColor: MainColor.black222222,
       appBar: CustomAppBar(
         leading: IconButton(
+          key: const Key('back_btn'),
           icon: const Icon(
             Icons.arrow_back_ios_new_sharp,
             size: 18,
@@ -183,41 +182,30 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
           /// music indicator
           Slider(
-            value: _position.inSeconds.toDouble(),
+            value: position.inSeconds.toDouble(),
             min: 0.0,
-            max: _duration.inSeconds.toDouble(),
+            max: duration.inSeconds.toDouble(),
             thumbColor: MainColor.purple5A579C,
             activeColor: MainColor.purple5A579C,
-            onChanged: (double value) {
-              setState(() {
-                seekToSecond(value.toInt());
-                value = value;
-              });
-            },
+            onChanged: seekToSecond,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 18,
             ),
             child: TimeDisplay(
-              position: _position,
-              duration: _duration,
+              position: position,
+              duration: duration,
             ),
           ),
 
           /// controll button
-          Material(
-            color: MainColor.whiteF2F0EB,
-            shape: const OvalBorder(),
-            child: IconButton(
-              splashRadius: 25,
-              iconSize: 32,
-              icon: Icon(
-                play ? Icons.pause : Icons.play_arrow,
-                color: MainColor.purple5A579C,
-              ),
-              onPressed: playPause,
-            ),
+          ControllButton(
+            icon: play ? Icons.pause : Icons.play_arrow,
+            bgColor: MainColor.whiteF2F0EB,
+            onPressed: playPause,
+            splashR: 25,
+            icSize: 32,
           ),
         ],
       ),

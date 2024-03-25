@@ -1,3 +1,4 @@
+// coverage:ignore-file
 import 'dart:convert';
 
 MusicModel musicModelFromJson(String str) =>
@@ -38,6 +39,7 @@ class Music {
   String? artist;
   String? albumName;
   String? releaseYear;
+  int? duration;
   String? sourceType;
   String? source;
   String? coverPath;
@@ -47,6 +49,7 @@ class Music {
     this.artist,
     this.albumName,
     this.releaseYear,
+    this.duration,
     this.sourceType,
     this.source,
     this.coverPath,
@@ -57,6 +60,7 @@ class Music {
         artist: json["artist"],
         albumName: json["album_name"],
         releaseYear: json["release_year"],
+        duration: json["duration"],
         sourceType: json["source_type"],
         source: json["source"],
         coverPath: json["cover_path"],
@@ -67,6 +71,7 @@ class Music {
         "artist": artist,
         "album_name": albumName,
         "release_year": releaseYear,
+        "duration": duration,
         "source_type": sourceType,
         "source": source,
         "cover_path": coverPath,

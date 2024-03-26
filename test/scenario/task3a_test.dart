@@ -66,6 +66,20 @@ void main() {
     );
   }
 
+  testWidgets('BackButtonAppBarLeading built to specification',
+      (WidgetTester tester) async {
+    /// [todo]
+  });
+
+  testWidgets('DotDivider built to specification', (WidgetTester tester) async {
+    /// [todo]
+  });
+
+  testWidgets('ControllButton built to specification',
+      (WidgetTester tester) async {
+    /// [todo]
+  });
+
   testWidgets('MusicCoverImage widget render local source',
       (WidgetTester tester) async {
     await tester.pumpWidget(

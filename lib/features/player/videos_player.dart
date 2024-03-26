@@ -5,7 +5,8 @@ import 'package:media_player/features/player/components/controll_button.dart';
 import 'package:media_player/features/player/components/loading_video_placeholder.dart';
 import 'package:media_player/features/player/components/video_information.dart';
 import 'package:media_player/features/player/components/video_indicator.dart';
-import 'package:media_player/shared_components/custom_app_bar.dart';
+import 'package:media_player/shared_components/app_bar/back_button_app_bar_leading.dart';
+import 'package:media_player/shared_components/app_bar/custom_app_bar.dart';
 import 'package:media_player/utils/debouncer.dart';
 import 'package:video_player/video_player.dart';
 
@@ -13,37 +14,43 @@ class VideosPlayer extends StatefulWidget {
   const VideosPlayer({super.key});
 
   @override
-  State<VideosPlayer> createState() => _VideosPlayerState();
+  State<VideosPlayer> createState() => VideosPlayerState();
 }
 
-class _VideosPlayerState extends State<VideosPlayer> {
+@visibleForTesting
+class VideosPlayerState extends State<VideosPlayer> {
   final Duration animDuration = const Duration(milliseconds: 300);
   late Video video;
-  late VideoPlayerController _controller;
-  Duration _duration = const Duration();
-  Duration _position = const Duration();
-  late Future<void> _initializeVideoPlayerFuture;
-  bool _isVisible = true;
+  late VideoPlayerController controller;
+  Duration duration = const Duration();
+  Duration position = const Duration();
+  late Future<void> initializeVideoPlayerFuture;
+  bool isVisible = true;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     video = ModalRoute.of(context)!.settings.arguments as Video;
+
+    initVideoController();
+  }
+
+  initVideoController() {
     video.sourceType == "local"
-        ? _controller = VideoPlayerController.asset(video.source!)
-        : _controller =
+        ? controller = VideoPlayerController.asset(video.source!)
+        : controller =
             VideoPlayerController.networkUrl(Uri.parse(video.source!));
-    _initializeVideoPlayerFuture = _controller.initialize().then((value) {
+    initializeVideoPlayerFuture = controller.initialize().then((value) {
       setState(() {
-        _duration = _controller.value.duration;
+        duration = controller.value.duration;
       });
     });
-    _controller.setLooping(true);
-    _controller.setVolume(1.0);
+    controller.setLooping(true);
+    controller.setVolume(1.0);
 
-    _controller.addListener(
+    controller.addListener(
       () => setState(
-        () => _position = _controller.value.position,
+        () => position = controller.value.position,
       ),
     );
   }
@@ -51,18 +58,40 @@ class _VideosPlayerState extends State<VideosPlayer> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    controller.dispose();
+  }
+
+  switchControllVisibility() {
+    if (!isVisible) {
+      onVisible();
+      Debouncer(milliseconds: 2500).run(() {
+        if (isVisible && controller.value.isPlaying == true) {
+          offVisible();
+        }
+      });
+    }
+  }
+
+  playPause() {
+    if (isVisible) {
+      if (controller.value.isPlaying) {
+        controller.pause();
+      } else {
+        controller.play();
+        offVisible();
+      }
+    }
   }
 
   offVisible() {
     setState(() {
-      _isVisible = false;
+      isVisible = false;
     });
   }
 
   onVisible() {
     setState(() {
-      _isVisible = true;
+      isVisible = true;
     });
   }
 
@@ -70,42 +99,22 @@ class _VideosPlayerState extends State<VideosPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MainColor.black222222,
-      appBar: CustomAppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_sharp,
-            size: 18,
-            color: MainColor.whiteFFFFFF,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          splashRadius: 18,
-        ),
+      appBar: const CustomAppBar(
+        leading: BackButtonAppBarLeading(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// video section
           FutureBuilder(
-            future: _initializeVideoPlayerFuture,
+            future: initializeVideoPlayerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 /// video player
                 return Column(
                   children: [
                     GestureDetector(
-                      onTap: () async {
-                        if (!_isVisible) {
-                          onVisible();
-                          Debouncer(milliseconds: 2000).run(() {
-                            if (_isVisible &&
-                                _controller.value.isPlaying == true) {
-                              offVisible();
-                            }
-                          });
-                        }
-                      },
+                      onTap: switchControllVisibility,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -115,17 +124,17 @@ class _VideosPlayerState extends State<VideosPlayer> {
                             child: Stack(
                               alignment: Alignment.bottomLeft,
                               children: [
-                                VideoPlayer(_controller),
+                                VideoPlayer(controller),
                                 AnimatedOpacity(
                                   duration: animDuration,
-                                  opacity: _isVisible ? 1 : 0,
+                                  opacity: isVisible ? 1 : 0,
 
                                   /// video progress indicator
                                   child: VideoIndicator(
-                                    position: _position,
-                                    duration: _duration,
-                                    controller: _controller,
-                                    isVisible: _isVisible,
+                                    position: position,
+                                    duration: duration,
+                                    controller: controller,
+                                    isVisible: isVisible,
                                   ),
                                 ),
                               ],
@@ -133,23 +142,12 @@ class _VideosPlayerState extends State<VideosPlayer> {
                           ),
                           AnimatedOpacity(
                             duration: animDuration,
-                            opacity: _isVisible ? 1 : 0,
+                            opacity: isVisible ? 1 : 0,
                             child: ControllButton(
-                              icon: _controller.value.isPlaying
+                              icon: controller.value.isPlaying
                                   ? Icons.pause
                                   : Icons.play_arrow,
-                              onPressed: () {
-                                setState(() {
-                                  if (_isVisible) {
-                                    if (_controller.value.isPlaying) {
-                                      _controller.pause();
-                                    } else {
-                                      _controller.play();
-                                      offVisible();
-                                    }
-                                  }
-                                });
-                              },
+                              onPressed: playPause,
                               bgColor: MainColor.black000000.withOpacity(0.2),
                               splashR: 26,
                               icSize: 36,

@@ -15,6 +15,11 @@ import 'package:media_player/shared_components/dot_divider.dart';
 import 'package:media_player/utils/extension_function.dart';
 
 void main() {
+  testWidgets('CustomAppBar built to specification',
+      (WidgetTester tester) async {
+    /// [todo]
+  });
+
   testWidgets('Structur of CoverMusicCard widget is built correctly',
       (WidgetTester tester) async {
     // Create a mock Music object for testing

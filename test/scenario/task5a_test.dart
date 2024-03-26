@@ -35,10 +35,13 @@ void main() {
   testWidgets('VideosPlayer display its informations',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: const Home(),
-        routes: routes,
-        navigatorObservers: [mockNavigatorObserver],
+      MediaQuery(
+        data: const MediaQueryData(size: Size(480, 800)),
+        child: MaterialApp(
+          home: const Home(),
+          routes: routes,
+          navigatorObservers: [mockNavigatorObserver],
+        ),
       ),
     );
     await tester.pump();

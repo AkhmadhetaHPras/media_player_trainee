@@ -18,11 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: MainColor.purple5A579C,
       leading: Padding(
-        padding: const EdgeInsets.only(
-          left: 8,
-          top: 8,
-          bottom: 8,
-        ),
+        padding: const EdgeInsets.all(8),
         child: leading ??
             SvgPicture.asset(
               AssetsConsts.logo,

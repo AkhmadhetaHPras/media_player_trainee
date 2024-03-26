@@ -6,7 +6,8 @@ import 'package:media_player/data/music_model.dart';
 import 'package:media_player/features/player/components/controll_button.dart';
 import 'package:media_player/features/player/components/music_cover_image.dart';
 import 'package:media_player/features/player/components/time_display.dart';
-import 'package:media_player/shared_components/custom_app_bar.dart';
+import 'package:media_player/shared_components/app_bar/back_button_app_bar_leading.dart';
+import 'package:media_player/shared_components/app_bar/custom_app_bar.dart';
 import 'package:media_player/shared_components/dot_divider.dart';
 
 class MusicPlayer extends StatefulWidget {
@@ -111,20 +112,7 @@ class MusicPlayerState extends State<MusicPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MainColor.black222222,
-      appBar: CustomAppBar(
-        leading: IconButton(
-          key: const Key('back_btn'),
-          icon: const Icon(
-            Icons.arrow_back_ios_new_sharp,
-            size: 18,
-            color: MainColor.whiteFFFFFF,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          splashRadius: 18,
-        ),
-      ),
+      appBar: const CustomAppBar(leading: BackButtonAppBarLeading()),
       body: Column(
         children: [
           const SizedBox(

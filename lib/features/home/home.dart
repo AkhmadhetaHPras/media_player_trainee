@@ -6,7 +6,7 @@ import 'package:media_player/data/video_model.dart';
 import 'package:media_player/features/home/components/cover_music_card.dart';
 import 'package:media_player/features/home/components/cover_video_card.dart';
 import 'package:media_player/features/home/components/title_section.dart';
-import 'package:media_player/shared_components/custom_app_bar.dart';
+import 'package:media_player/shared_components/app_bar/custom_app_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

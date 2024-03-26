@@ -29,7 +29,6 @@ void main() {
 
   setUp(() {
     mockNavigatorObserver = MockNavigatorObserver();
-    WidgetsBinding.instance.addObserver(mockNavigatorObserver);
     capturedVideo = null;
   });
 
@@ -57,9 +56,5 @@ void main() {
     } else {
       fail('Video object not passing to the video player page via arguments');
     }
-  });
-
-  tearDown(() {
-    WidgetsBinding.instance.removeObserver(mockNavigatorObserver);
   });
 }

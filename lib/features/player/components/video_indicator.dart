@@ -9,10 +9,12 @@ class VideoIndicator extends StatelessWidget {
     required Duration position,
     required Duration duration,
     required VideoPlayerController controller,
+    required this.isVisible,
   })  : _position = position,
         _duration = duration,
         _controller = controller;
 
+  final bool isVisible;
   final Duration _position;
   final Duration _duration;
   final VideoPlayerController _controller;
@@ -48,7 +50,7 @@ class VideoIndicator extends StatelessWidget {
           const SizedBox(height: 2),
           VideoProgressIndicator(
             _controller,
-            allowScrubbing: false,
+            allowScrubbing: isVisible ? true : false,
           ),
         ],
       ),

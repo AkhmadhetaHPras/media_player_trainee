@@ -78,7 +78,8 @@ void main() {
     Finder columnFinder,
   ) {
     final inkWell = tester.widget<InkWell>(inkWellFinder);
-    expect((inkWell.child as Text).data, 'Less');
+    expect((inkWell.child as Text).data, 'Less',
+        reason: "InkWell child not a Text widget with 'Less' text data");
 
     final descriptionFinder = find.descendant(
       of: columnFinder,
@@ -87,9 +88,19 @@ void main() {
             widget is Text && widget.data == localSourceVideo.description,
       ),
     );
-    expect(descriptionFinder, findsOneWidget);
+    expect(
+      descriptionFinder,
+      findsOneWidget,
+      reason:
+          "Text widget that containing video description not found within Column in VideoInformation Widget",
+    );
     final description = tester.widget<Text>(descriptionFinder);
-    expect(description.maxLines, null);
+    expect(
+      description.maxLines,
+      null,
+      reason:
+          "maxLines property of Text widget that containing video description should be null",
+    );
   }
 
   testWidgets('Structur of LoadingVideoPlaceholder widget is built correctly',
@@ -109,13 +120,27 @@ void main() {
     );
 
     final loadingVideoPlaceholder = find.byType(LoadingVideoPlaceholder);
-    expect(loadingVideoPlaceholder, findsOneWidget);
+    expect(
+      loadingVideoPlaceholder,
+      findsOneWidget,
+      reason:
+          'Expected to find a LoadingVideoPlaceholder widget in widget tree',
+    );
 
     final stackFinder = find.byType(Stack).first;
+    expect(
+      stackFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a Stack widget as root of LoadingVideoPlaceholder widget',
+    );
     final stackWidget = tester.widget<Stack>(stackFinder);
 
-    expect(stackFinder, findsOneWidget);
-    expect(stackWidget.alignment, Alignment.center);
+    expect(
+      stackWidget.alignment,
+      Alignment.center,
+      reason: 'Stack alignment should be Alignment.center',
+    );
 
     final videoWrapperFinder = find.descendant(
       of: stackFinder,
@@ -125,11 +150,22 @@ void main() {
           widget.height == 270),
     );
 
-    expect(videoWrapperFinder, findsOneWidget);
-    expect(stackWidget.children.last, isA<CircularProgressIndicator>());
+    expect(
+      videoWrapperFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a SizedBox widget with the specified dimensions within Stack widget child',
+    );
+    expect(
+      stackWidget.children.last,
+      isA<CircularProgressIndicator>(),
+      reason: 'Stack should have a CircularProgressIndicator as the last child',
+    );
     expect(
       (stackWidget.children.last as CircularProgressIndicator).color,
       MainColor.purple5A579C,
+      reason:
+          'CircularProgressIndicator color should match MainColor.purple5A579C',
     );
   });
 
@@ -150,6 +186,12 @@ void main() {
     );
 
     final stackFinder = find.byType(Stack).first;
+    expect(
+      stackFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a Stack widget as root of LoadingVideoPlaceholder widget',
+    );
     final videoWrapperFinder = find.descendant(
       of: stackFinder,
       matching: find.byWidgetPredicate((widget) =>
@@ -159,13 +201,26 @@ void main() {
           widget.child is Image),
     );
 
-    expect(videoWrapperFinder, findsOneWidget);
+    expect(
+      videoWrapperFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a SizedBox with specified dimension and an Image child',
+    );
     final image =
         (tester.widget<SizedBox>(videoWrapperFinder).child as Image).image;
     if (image is AssetImage) {
-      expect(image.assetName, localSourceVideo.coverPath!);
+      expect(
+        image.assetName,
+        localSourceVideo.coverPath!,
+        reason: 'Expected an Image.asset with matching cover path',
+      );
     } else if (image is ExactAssetImage) {
-      expect(image.assetName, localSourceVideo.coverPath!);
+      expect(
+        image.assetName,
+        localSourceVideo.coverPath!,
+        reason: 'Expected an Image.asset with matching cover path',
+      );
     } else {
       fail('Unexpected asset image widget found | use Image.asset instead');
     }
@@ -204,6 +259,12 @@ void main() {
     );
 
     final stackFinder = find.byType(Stack).first;
+    expect(
+      stackFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a Stack widget as root of LoadingVideoPlaceholder widget',
+    );
     final videoWrapperFinder = find.descendant(
       of: stackFinder,
       matching: find.byWidgetPredicate((widget) =>
@@ -213,18 +274,39 @@ void main() {
           widget.child is ClipRRect),
     );
 
-    expect(videoWrapperFinder, findsOneWidget);
+    expect(
+      videoWrapperFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a SizedBox with specified dimension and an ClipRRect child for network source',
+    );
 
     final clipRRect =
         tester.widget<SizedBox>(videoWrapperFinder).child as ClipRRect;
 
-    expect(clipRRect.child, isA<CachedNetworkImage>());
+    expect(
+      clipRRect.child,
+      isA<CachedNetworkImage>(),
+      reason: 'Expected ClipRRect child to be a CachedNetworkImage',
+    );
 
     final networkImage = clipRRect.child as CachedNetworkImage;
-    expect(networkImage.imageUrl, networkSourceVideo.coverPath);
+    expect(
+      networkImage.imageUrl,
+      networkSourceVideo.coverPath,
+      reason: 'CachedNetworkImage URL should match video cover path',
+    );
 
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(networkImage.fit, BoxFit.cover);
+    expect(
+      find.byType(CircularProgressIndicator),
+      findsOneWidget,
+      reason: 'Expected to find a CircularProgressIndicator',
+    );
+    expect(
+      networkImage.fit,
+      BoxFit.cover,
+      reason: 'CachedNetworkImage fit property should be BoxFit.cover',
+    );
   });
 
   testWidgets('Structur of VideoIndicator widget is built correctly',
@@ -232,7 +314,7 @@ void main() {
     Duration position = const Duration();
     Duration duration = const Duration(seconds: 197);
     VideoPlayerController controller = VideoPlayerController.asset(
-      'assets/videos/aquaman_and_the_lost_kingdom_trailer.mp4',
+      localSourceVideo.source!,
     );
 
     await tester.pumpWidget(
@@ -242,25 +324,54 @@ void main() {
             position: position,
             duration: duration,
             controller: controller,
+            isVisible: true,
           ),
         ),
       ),
     );
 
+    expect(
+      find.byType(VideoIndicator),
+      findsOneWidget,
+      reason: 'Expected to found VideoIndicator widget in widget tree',
+    );
+
     final containerFinder = find.byType(Container).first;
-    expect(containerFinder, findsOneWidget);
+    expect(
+      containerFinder,
+      findsOneWidget,
+      reason: 'Expected to find a Container widget as its root widget',
+    );
     final container = tester.widget<Container>(containerFinder);
 
-    expect((container.padding as EdgeInsets).top, 20.0);
-    expect(container.decoration, isA<BoxDecoration>());
-    expect((container.decoration as BoxDecoration).gradient,
-        isA<LinearGradient>());
-    expect(container.child, isA<Column>());
+    expect(
+      (container.padding as EdgeInsets).top,
+      20.0,
+      reason: 'Container top padding should be 20',
+    );
+    expect(
+      container.decoration,
+      isA<BoxDecoration>(),
+      reason: 'Expected Container decoration is a BoxDecoration',
+    );
+    expect(
+      (container.decoration as BoxDecoration).gradient,
+      isA<LinearGradient>(),
+      reason: 'Expected BoxDecoration gradient should be a LinearGradient',
+    );
 
     final linearGradient =
         (container.decoration as BoxDecoration).gradient as LinearGradient;
-    expect(linearGradient.begin, Alignment.bottomCenter);
-    expect(linearGradient.end, Alignment.topCenter);
+    expect(
+      linearGradient.begin,
+      Alignment.bottomCenter,
+      reason: 'LinearGradient begin alignment should be Alignment.bottomCenter',
+    );
+    expect(
+      linearGradient.end,
+      Alignment.topCenter,
+      reason: 'LinearGradient end alignment should be Alignment.bottomCenter',
+    );
 
     final colors = [
       MainColor.black000000,
@@ -268,12 +379,29 @@ void main() {
       MainColor.black000000.withOpacity(0.2),
       Colors.transparent,
     ];
-    expect(linearGradient.colors, colors);
+    expect(
+      linearGradient.colors,
+      colors,
+      reason: 'LinearGradient colors should be as specified',
+    );
 
+    expect(
+      container.child,
+      isA<Column>(),
+      reason: 'Container child should be a Column widget',
+    );
     final columnFinder = find.byType(Column);
-    expect(columnFinder, findsOneWidget);
+    expect(
+      columnFinder,
+      findsOneWidget,
+      reason: 'Expected to find a Column widget',
+    );
     final column = container.child as Column;
-    expect(column.mainAxisSize, MainAxisSize.min);
+    expect(
+      column.mainAxisSize,
+      MainAxisSize.min,
+      reason: 'Column mainAxisSize should be MainAxisSize.min',
+    );
 
     final timeDisplayFinder = find.descendant(
       of: columnFinder,
@@ -282,22 +410,32 @@ void main() {
           (widget.padding as EdgeInsets).horizontal == 16 &&
           widget.child is TimeDisplay),
     );
-    expect(timeDisplayFinder, findsOneWidget);
-    expect(find.byType(TimeDisplay), findsOneWidget,
-        reason: 'VideosPlayer must have a TimeDisplay component');
+    expect(
+      timeDisplayFinder,
+      findsOneWidget,
+      reason:
+          'Expected to find a TimeDisplay widget with padding horizontal set to 8 within column widget',
+    );
     expect(
       find.text(position.toString().split(".")[0]),
       findsOneWidget,
       reason: 'VideosPlayer display video position',
     );
-    expect(find.text(duration.toString().split(".")[0]), findsOneWidget,
-        reason: 'VideosPlayer display video duration');
+    expect(
+      find.text(duration.toString().split(".")[0]),
+      findsOneWidget,
+      reason: 'VideosPlayer display video duration',
+    );
 
     final videoProgressFinder = find.descendant(
       of: columnFinder,
       matching: find.byType(VideoProgressIndicator),
     );
-    expect(videoProgressFinder, findsOneWidget);
+    expect(
+      videoProgressFinder,
+      findsOneWidget,
+      reason: 'Expected to find a VideoProgressIndicator widget',
+    );
   });
 
   testWidgets('Structur of VideoInformation widget is built correctly',
@@ -315,23 +453,53 @@ void main() {
       ),
     );
 
+    expect(
+      find.byType(VideoInformation),
+      findsOneWidget,
+      reason: 'Expected to find a VideoInformation widget in widget tree',
+    );
+
     final columnFinder = find.byType(Column);
-    expect(columnFinder, findsOneWidget);
+    expect(
+      columnFinder,
+      findsOneWidget,
+      reason: 'Expected to find a Column widget as its root widget',
+    );
     final column = tester.widget<Column>(columnFinder);
-    expect(column.crossAxisAlignment, CrossAxisAlignment.start);
+    expect(
+      column.crossAxisAlignment,
+      CrossAxisAlignment.start,
+      reason: 'Column crossAxisAlignment should be CrossAxisAlignment.start',
+    );
 
     final titleFinder = find.byWidgetPredicate(
         (widget) => widget is Text && widget.data == localSourceVideo.title);
-    expect(titleFinder, findsOneWidget);
+    expect(
+      titleFinder,
+      findsOneWidget,
+      reason: 'Expected to find a Text widget for video title',
+    );
     final title = tester.widget<Text>(titleFinder);
-    expect(title.maxLines, 3);
-    expect(title.overflow, TextOverflow.ellipsis);
+    expect(
+      title.maxLines,
+      3,
+      reason:
+          'Text widget with video title text data should have maxLines set to 3',
+    );
+    expect(
+      title.overflow,
+      TextOverflow.ellipsis,
+      reason:
+          'Text widget with video title text data should have overflow set to elipsis',
+    );
     expect(
       title.style,
       MainTextStyle.poppinsW600.copyWith(
         fontSize: 18,
         color: MainColor.whiteF2F0EB,
       ),
+      reason:
+          'Text widget with video title text data should have style as specified',
     );
 
     final paddingChannelWrapperFinder = find.descendant(
@@ -343,12 +511,22 @@ void main() {
             widget.child is Row,
       ),
     );
-    expect(paddingChannelWrapperFinder, findsOneWidget);
+    expect(
+      paddingChannelWrapperFinder,
+      findsOneWidget,
+      reason:
+          'Expected padding widget with vertical padding set to 8 and have row widget child within column',
+    );
     final rowChannelWrapperFinder = find.descendant(
       of: paddingChannelWrapperFinder,
       matching: find.byType(Row),
     );
-    expect(rowChannelWrapperFinder, findsOneWidget);
+    expect(
+      rowChannelWrapperFinder,
+      findsOneWidget,
+      reason:
+          'Expected a Row widget as wrapper for Channel information within padding widget',
+    );
 
     final sizedboxWrapperChannelImageFinder = find.descendant(
       of: rowChannelWrapperFinder,
@@ -360,37 +538,67 @@ void main() {
             widget.child is ClipRRect,
       ),
     );
-    expect(sizedboxWrapperChannelImageFinder, findsOneWidget);
+    expect(
+      sizedboxWrapperChannelImageFinder,
+      findsOneWidget,
+      reason:
+          'Expected a SizedBox with ClipRRect child and specified dimension',
+    );
 
     final channelImageFinder = find.descendant(
       of: sizedboxWrapperChannelImageFinder,
       matching: find.byType(CachedNetworkImage),
     );
-    expect(channelImageFinder, findsOneWidget);
+    expect(
+      channelImageFinder,
+      findsOneWidget,
+      reason: 'Expected a CachedNetworkImage widget within ClipRRect widget',
+    );
     final channelImage = tester.widget<CachedNetworkImage>(channelImageFinder);
-    expect(channelImage.imageUrl, localSourceVideo.creatorPhoto);
-    expect(channelImage.fit, BoxFit.cover);
+    expect(
+      channelImage.imageUrl,
+      localSourceVideo.creatorPhoto,
+      reason: 'CachedNetworkImage image URL should match video.creatorPhoto',
+    );
+    expect(
+      channelImage.fit,
+      BoxFit.cover,
+      reason: 'CachedNetworkImage fit should be BoxFit.cover',
+    );
 
     final channelImageLoader = find.byType(CircularProgressIndicator);
-    expect(channelImageLoader, findsOneWidget);
+    expect(channelImageLoader, findsOneWidget,
+        reason: 'Expected a CircularProgressIndicator for image loading');
+
     expect(
       tester.widget<CircularProgressIndicator>(channelImageLoader).color,
       MainColor.purple5A579C,
+      reason: 'Progress indicator color should match MainColor.purple5A579C',
     );
 
     final channelNameFinder = find.descendant(
       of: rowChannelWrapperFinder,
       matching: find.byType(Text),
     );
-    expect(channelNameFinder, findsOneWidget);
+    expect(
+      channelNameFinder,
+      findsOneWidget,
+      reason:
+          'Expected a Text widget for channel name within row widget (inside padding)',
+    );
     final channelName = tester.widget<Text>(channelNameFinder);
-    expect(channelName.data, localSourceVideo.creator);
+    expect(
+      channelName.data,
+      localSourceVideo.creator,
+      reason: 'Channel name should match video.creator',
+    );
     expect(
       channelName.style,
       MainTextStyle.poppinsW500.copyWith(
         fontSize: 14,
         color: MainColor.whiteFFFFFF,
       ),
+      reason: 'Expected Channel name text style as specified',
     );
 
     final rowDetailsWrapperFinder = find.descendant(
@@ -403,7 +611,12 @@ void main() {
             widget.children.last is Text,
       ),
     );
-    expect(rowDetailsWrapperFinder, findsOneWidget);
+    expect(
+      rowDetailsWrapperFinder,
+      findsOneWidget,
+      reason:
+          'Expected a Row widget for details (views count[first child], DotDivider[second child], and release date[third/last child])',
+    );
 
     final viewsFinder = find.descendant(
       of: rowDetailsWrapperFinder,
@@ -412,7 +625,12 @@ void main() {
           widget.data ==
               "${localSourceVideo.viewsCount!.formatViewsCount()} x views"),
     );
-    expect(viewsFinder, findsOneWidget);
+    expect(
+      viewsFinder,
+      findsOneWidget,
+      reason:
+          "Expected a Text widget for Views count with format 'video.viewsCount.formatViewsCount() x views' within Row widget (insidE Column directly)",
+    );
     final viewsCount = tester.widget<Text>(viewsFinder);
     expect(
       viewsCount.style,
@@ -420,6 +638,7 @@ void main() {
         fontSize: 13,
         color: MainColor.whiteFFFFFF,
       ),
+      reason: 'Expected views count text style as specified',
     );
 
     final releaseFinder = find.descendant(
@@ -430,7 +649,12 @@ void main() {
             widget.data == localSourceVideo.releaseDate!.toLocalTime(),
       ),
     );
-    expect(releaseFinder, findsOneWidget);
+    expect(
+      releaseFinder,
+      findsOneWidget,
+      reason:
+          "Expected a Text widget for Release date with format 'video.releaseDate.toLocalTime()' within Row widget (insidE Column directly)",
+    );
     final releaseDate = tester.widget<Text>(releaseFinder);
     expect(
       releaseDate.style,
@@ -438,6 +662,7 @@ void main() {
         fontSize: 13,
         color: MainColor.whiteFFFFFF,
       ),
+      reason: 'Expected release date text style as specified',
     );
 
     final descriptionFinder = find.descendant(
@@ -447,7 +672,12 @@ void main() {
             widget is Text && widget.data == localSourceVideo.description,
       ),
     );
-    expect(descriptionFinder, findsOneWidget);
+    expect(
+      descriptionFinder,
+      findsOneWidget,
+      reason:
+          'Expected a Text widget for description within Column (root widget)',
+    );
     final description = tester.widget<Text>(descriptionFinder);
     expect(
       description.style,
@@ -455,25 +685,42 @@ void main() {
         fontSize: 12,
         color: MainColor.whiteFFFFFF,
       ),
+      reason: 'Expected description text style as specified',
+    );
+    expect(
+      description.maxLines,
+      3,
+      reason: 'Text widget for Description should have maxLines set to 3',
     );
 
     final inkWellFinder = find.descendant(
       of: columnFinder,
       matching: find.byType(InkWell),
     );
-    expect(inkWellFinder, findsOneWidget);
-    final inkWell = tester.widget<InkWell>(inkWellFinder);
-    expect(inkWell.child, isA<Text>());
     expect(
-      (inkWell.child as Text).style,
-      MainTextStyle.poppinsW400.copyWith(
-        fontSize: 12,
-        color: Colors.blue,
-      ),
+      inkWellFinder,
+      findsOneWidget,
+      reason: 'Expected an InkWell widget with in Column (root widget)',
     );
+    final inkWell = tester.widget<InkWell>(inkWellFinder);
+    expect(
+      inkWell.child,
+      isA<Text>(),
+      reason: 'InkWell widget child should be a Text widget',
+    );
+    expect(
+        (inkWell.child as Text).style,
+        MainTextStyle.poppinsW400.copyWith(
+          fontSize: 12,
+          color: Colors.blue,
+        ),
+        reason: 'Expected InkWell child text style as specified');
 
-    expect(description.maxLines, 3);
-    expect((inkWell.child as Text).data, '...other');
+    expect(
+      (inkWell.child as Text).data,
+      '...other',
+      reason: 'InkWell child text data should be "...other"',
+    );
   });
 
   testWidgets('VideoInformation widget can handle show more action',
@@ -492,7 +739,11 @@ void main() {
     );
 
     final columnFinder = find.byType(Column);
-    expect(columnFinder, findsOneWidget);
+    expect(
+      columnFinder,
+      findsOneWidget,
+      reason: 'Expected to find a Column widget as its root widget',
+    );
     Finder inkWellFinder = find.descendant(
       of: columnFinder,
       matching: find.byType(InkWell),

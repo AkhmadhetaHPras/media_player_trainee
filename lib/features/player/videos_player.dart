@@ -125,6 +125,7 @@ class _VideosPlayerState extends State<VideosPlayer> {
                                     position: _position,
                                     duration: _duration,
                                     controller: _controller,
+                                    isVisible: _isVisible,
                                   ),
                                 ),
                               ],
